@@ -1,0 +1,11 @@
+active_user:
+  name: Active User
+  email_address: active@example.com
+  password_digest: <%= BCrypt::Password.create("password") %>
+  is_active: true
+
+withdrawn_user:
+  name: Withdrawn User
+  email_address: withdrawn@example.com
+  password_digest: <%= BCrypt::Password.create("password") %>
+  is_active: false

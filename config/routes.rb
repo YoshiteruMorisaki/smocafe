@@ -1,14 +1,55 @@
-Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+ Rails.application.routes.draw do
+  # ------------------------------
+  # 一般ユーザー向けルーティング
+  # `scope module: :public` により、Public::配下のコントローラを参照します。
+  # ------------------------------
+  scope module: :public do
+    # トップページ / About
+    root "homes#top"
+    get "about", to: "homes#about"
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+    # 会員登録 / ログイン
+    get "users/sign_up", to: "registrations#new"
+    post "users", to: "registrations#create"
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+    get "users/sign_in", to: "sessions#new"
+    post "users/sign_in", to: "sessions#create"
+    delete "users/sign_out", to: "sessions#destroy"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+    # マイページ / 会員情報編集 / 退会
+    get "users/my_page", to: "users#show"
+    get "users/information/edit", to: "users#edit"
+    patch "users", to: "users#update"
+    get "users/unsubscribe", to: "users#unsubscribe"
+    patch "users/withdraw", to: "users#withdraw"
+
+    # カフェ一覧・詳細
+    # 各店舗に対してレビュー投稿とブックマーク登録をネストしています。
+    resources :shops, only: [:index, :show] do
+      resources :reports, only: [:new, :create]
+      resource :bookmark, only: [:create, :destroy]
+    end
+
+    # 投稿済みレビューの編集 / 削除、ブックマーク一覧
+    resources :reports, only: [:edit, :update, :destroy]
+    resources :bookmarks, only: [:index]
+  end
+
+  # ------------------------------
+  # 管理者向けルーティング
+  # URL は `/admin/...` になり、Admin::配下のコントローラを参照します。
+  # ------------------------------
+  namespace :admin do
+    root "homes#top"
+
+    # 管理者ログイン
+    get "sign_in", to: "sessions#new"
+    post "sign_in", to: "sessions#create"
+    delete "sign_out", to: "sessions#destroy"
+
+    # 管理画面で扱う主要リソース
+    resources :shops, except: [:show]
+    resources :reports, only: [:index, :destroy]
+    resources :tags, except: [:show]
+  end
 end

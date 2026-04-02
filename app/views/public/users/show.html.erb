@@ -1,0 +1,55 @@
+<% content_for :title, "Smocafe | マイページ" %>
+
+<div class="container py-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h2 mb-1">マイページ</h1>
+      <p class="text-secondary mb-0">登録情報とアカウント状態を確認できます。</p>
+    </div>
+    <%= link_to users_information_edit_path, class: "btn btn-outline-success" do %>
+      <i class="fa-regular fa-pen-to-square me-1"></i>会員情報を編集
+    <% end %>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h5 mb-3">登録情報</h2>
+          <dl class="row mb-0">
+            <dt class="col-sm-4 text-secondary">表示名</dt>
+            <dd class="col-sm-8"><%= @user.name %></dd>
+
+            <dt class="col-sm-4 text-secondary">メールアドレス</dt>
+            <dd class="col-sm-8"><%= @user.email_address %></dd>
+
+            <dt class="col-sm-4 text-secondary">ステータス</dt>
+            <dd class="col-sm-8">
+              <% if @user.is_active? %>
+                <span class="badge text-bg-success">有効</span>
+              <% else %>
+                <span class="badge text-bg-secondary">退会済み</span>
+              <% end %>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body p-4">
+          <h2 class="h5 mb-3">アカウント操作</h2>
+          <div class="d-grid gap-2">
+            <%= link_to users_information_edit_path, class: "btn btn-success" do %>
+              <i class="fa-regular fa-user me-1"></i>プロフィールを更新する
+            <% end %>
+            <%= link_to users_unsubscribe_path, class: "btn btn-outline-danger" do %>
+              <i class="fa-regular fa-circle-xmark me-1"></i>退会手続きへ進む
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

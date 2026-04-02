@@ -1,0 +1,33 @@
+<% content_for :title, "Smocafe Admin | ログイン" %>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+          <div class="text-center mb-4">
+            <div class="fs-1 text-dark mb-2"><i class="fa-solid fa-shield-halved"></i></div>
+            <h1 class="h3 mb-1">管理者ログイン</h1>
+            <p class="text-secondary mb-0">管理画面へアクセスするための認証です。</p>
+          </div>
+
+          <%= form_with url: admin_sign_in_path do %>
+            <div class="mb-3">
+              <%= label_tag :email_address, "メールアドレス", class: "form-label" %>
+              <%= email_field_tag :email_address, @email_address, class: "form-control", required: true %>
+            </div>
+
+            <div class="mb-4">
+              <%= label_tag :password, "パスワード", class: "form-label" %>
+              <%= password_field_tag :password, nil, class: "form-control", required: true %>
+            </div>
+
+            <div class="d-grid">
+              <%= submit_tag "ログイン", class: "btn btn-dark btn-lg" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

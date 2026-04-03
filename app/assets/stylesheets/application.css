@@ -1,1 +1,116 @@
-/* Bootstrapベースで統一するため、独自CSSは空にしています。 */
+/* Bootstrapベースに、トップ画面のヒーローだけ最小限の見た目を追加します。 */
+
+.top-hero {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.top-hero__inner {
+	min-height: 52vh;
+}
+
+.top-hero__copy {
+	color: #17110d;
+}
+
+.top-hero__brand {
+	font-family: inherit;
+	font-size: clamp(2rem, 3.6vw, 2.9rem);
+	font-weight: 600;
+	letter-spacing: 0.02em;
+	line-height: 1.1;
+}
+
+.top-hero__headline {
+	font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
+	font-size: clamp(1.8rem, 4vw, 3.2rem);
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
+}
+
+.top-hero__description {
+	font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+	font-weight: 500;
+	line-height: 1.7;
+	max-width: 34rem;
+}
+
+.top-hero__actions {
+	margin-left: auto;
+	max-width: 26rem;
+}
+
+.top-hero__action-btn {
+	align-items: center;
+	background: rgba(92, 67, 48, 0.74);
+	border: 3px solid rgba(255, 255, 255, 0.96);
+	border-radius: 0;
+	color: #fff;
+	display: flex;
+	gap: 0.9rem;
+	justify-content: flex-start;
+	min-height: 5.5rem;
+	padding: 1rem 1.25rem;
+	text-align: left;
+	transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.top-hero__action-btn:hover,
+.top-hero__action-btn:focus {
+	background: rgba(79, 57, 41, 0.86);
+	color: #fff;
+	transform: translateY(-2px);
+}
+
+.top-hero__action-icon {
+	align-items: center;
+	border: 3px solid rgba(255, 255, 255, 0.96);
+	border-radius: 50%;
+	display: inline-flex;
+	flex: 0 0 3.2rem;
+	font-size: 1.35rem;
+	height: 3.2rem;
+	justify-content: center;
+	width: 3.2rem;
+}
+
+.top-hero__action-label {
+	font-size: clamp(1.1rem, 1.7vw, 1.7rem);
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+@media (max-width: 991.98px) {
+	.top-hero {
+		background-position: 58% center;
+	}
+
+	.top-hero__inner {
+		min-height: 42vh;
+	}
+
+	.top-hero__actions {
+		max-width: 100%;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.top-hero__inner {
+		min-height: auto;
+	}
+
+	.top-hero__action-btn {
+		gap: 0.75rem;
+		min-height: 4.75rem;
+		padding: 0.9rem 1rem;
+	}
+
+	.top-hero__action-icon {
+		flex-basis: 2.8rem;
+		font-size: 1.1rem;
+		height: 2.8rem;
+		width: 2.8rem;
+	}
+}

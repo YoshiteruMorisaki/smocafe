@@ -1,78 +1,40 @@
 <% content_for :title, "Smocafe | トップ" %>
 
-<section class="py-5 bg-white border-bottom">
-  <div class="container py-lg-4">
-    <div class="row align-items-center g-4">
-      <div class="col-lg-7">
-        <span class="badge text-bg-success mb-3">電子タバコOKのカフェ情報サイト</span>
-        <h1 class="display-5 fw-bold mb-3">喫煙可能なカフェ探しを、もっとスマートに。</h1>
-        <p class="lead text-secondary mb-4">
-          Smocafe は、加熱式タバコが利用できるカフェ情報をユーザー同士で共有するサービスです。
-          作業場所探しや休憩スポット探しを、わかりやすくサポートします。
-        </p>
-        <div class="d-flex flex-wrap gap-2">
-          <%= link_to users_sign_up_path, class: "btn btn-success btn-lg" do %>
-            <i class="fa-solid fa-user-plus me-2"></i>会員登録する
-          <% end %>
-          <%= link_to users_sign_in_path, class: "btn btn-outline-success btn-lg" do %>
-            <i class="fa-solid fa-right-to-bracket me-2"></i>ログイン
-          <% end %>
+<section
+  class="top-hero d-flex align-items-center"
+  style="background-image: linear-gradient(90deg, rgba(248, 240, 228, 0.88) 0%, rgba(248, 240, 228, 0.72) 36%, rgba(97, 68, 49, 0.18) 100%), url('<%= asset_path("top_bg.jpg") %>');"
+>
+  <div class="container py-3 py-lg-4">
+    <div class="row align-items-center g-4 g-xl-5 top-hero__inner">
+      <div class="col-lg-7 col-xl-6">
+        <div class="top-hero__copy pe-xl-4">
+          <p class="top-hero__brand mb-2">Smocafe</p>
+          <h1 class="top-hero__headline mb-3">
+            喫煙可能なカフェ探しを、<br>
+            もっとスマートに。
+          </h1>
+          <p class="top-hero__description mb-0">
+            Smocafeは、喫煙可能なカフェやひと息つける空間を見つけやすくするカフェ検索サービスです。
+            気になるエリアや今いる場所から、使いやすい一軒をすばやく探せます。
+          </p>
         </div>
       </div>
 
-      <div class="col-lg-5">
-        <div class="card border-0 shadow-sm">
-          <div class="card-body p-4">
-            <h2 class="h4 mb-3">Smocafeでできること</h2>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item px-0 d-flex align-items-center gap-3">
-                <i class="fa-solid fa-map-location-dot text-success"></i>
-                電子タバコ利用可のカフェを探せる
-              </li>
-              <li class="list-group-item px-0 d-flex align-items-center gap-3">
-                <i class="fa-solid fa-star text-warning"></i>
-                ユーザー投稿から最新の利用状況を確認
-              </li>
-              <li class="list-group-item px-0 d-flex align-items-center gap-3">
-                <i class="fa-solid fa-bookmark text-primary"></i>
-                気になる店舗を保存して比較しやすい
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+      <div class="col-lg-5 col-xl-5 ms-lg-auto">
+        <div class="d-grid gap-2 top-hero__actions">
+          <%= link_to root_path, class: "btn top-hero__action-btn" do %>
+            <span class="top-hero__action-icon">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </span>
+            <span class="top-hero__action-label">エリアから探す</span>
+          <% end %>
 
-<section class="py-5">
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="text-success fs-2 mb-3"><i class="fa-solid fa-magnifying-glass-location"></i></div>
-            <h3 class="h5">探しやすい</h3>
-            <p class="text-secondary mb-0">喫煙条件や利用シーンに合わせて、行きたいカフェの候補を見つけやすくします。</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="text-success fs-2 mb-3"><i class="fa-regular fa-comments"></i></div>
-            <h3 class="h5">共有できる</h3>
-            <p class="text-secondary mb-0">利用者の体験をもとに、リアルな喫煙ルールや雰囲気を投稿・閲覧できます。</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card h-100 border-0 shadow-sm">
-          <div class="card-body p-4">
-            <div class="text-success fs-2 mb-3"><i class="fa-solid fa-mug-saucer"></i></div>
-            <h3 class="h5">作業にも休憩にも</h3>
-            <p class="text-secondary mb-0">カフェ作業派にも、移動中のひと休みにも使いやすい情報設計を目指しています。</p>
-          </div>
+          <%= link_to root_path, class: "btn top-hero__action-btn" do %>
+            <span class="top-hero__action-icon">
+              <i class="fa-solid fa-location-crosshairs"></i>
+            </span>
+            <span class="top-hero__action-label">現在地から探す</span>
+          <% end %>
         </div>
       </div>
     </div>

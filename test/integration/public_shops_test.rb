@@ -20,4 +20,14 @@ class PublicShopsTest < ActionDispatch::IntegrationTest
     assert_match shops(:shibuya_lounge).name, response.body
     assert_no_match shops(:shinjuku_smoke).name, response.body
   end
+
+  test "guest can filter shops by smoking and facility conditions" do
+    get shops_path(filters: { heated_tobacco_allowed: "1", wifi_available: "1" })
+
+    assert_response :success
+    assert_match shops(:shibuya_lounge).name, response.body
+    assert_no_match shops(:shinjuku_smoke).name, response.body
+    assert_match "電子タバコ 可", response.body
+    assert_match "Wi-Fi あり", response.body
+  end
 end

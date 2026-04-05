@@ -1,0 +1,14 @@
+<% content_for :title, "Smocafe Admin | 店舗編集" %>
+
+<div class="container py-5">
+  <div class="mb-4">
+    <h1 class="h2 mb-1">店舗編集</h1>
+    <p class="text-secondary mb-0"><%= @shop.name %> の情報を更新します。</p>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <%= render "form", shop: @shop %>
+    </div>
+  </div>
+</div>

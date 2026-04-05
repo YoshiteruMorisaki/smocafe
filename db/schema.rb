@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_02_033122) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_03_090000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -56,6 +56,24 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_02_033122) do
     t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_sessions_on_admin_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "shops", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "area", null: false
+    t.string "address", null: false
+    t.string "business_hours"
+    t.string "closed_days"
+    t.integer "heated_tobacco_status", default: 0, null: false
+    t.integer "papper_tobacco_status", default: 0, null: false
+    t.boolean "wifi_available", default: false, null: false
+    t.boolean "power_available", default: false, null: false
+    t.text "description"
+    t.datetime "last_reported_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area"], name: "index_shops_on_area"
+    t.index ["last_reported_at"], name: "index_shops_on_last_reported_at"
   end
 
   create_table "users", force: :cascade do |t|

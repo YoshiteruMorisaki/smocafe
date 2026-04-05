@@ -1,0 +1,72 @@
+<% content_for :title, "Smocafe | #{@shop.name}" %>
+
+<div class="container py-5">
+  <div class="mb-4">
+    <%= link_to shops_path, class: "btn btn-link px-0 text-decoration-none" do %>
+      <i class="fa-solid fa-arrow-left me-1"></i>店舗一覧へ戻る
+    <% end %>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-lg-5">
+      <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
+        <div>
+          <p class="text-success fw-semibold mb-1"><%= @shop.area %></p>
+          <h1 class="h2 mb-2"><%= @shop.name %></h1>
+          <p class="text-secondary mb-0"><i class="fa-solid fa-location-dot me-2"></i><%= @shop.address %></p>
+        </div>
+        <div class="text-secondary small">
+          最終更新: <%= @shop.last_reported_at.present? ? l(@shop.last_reported_at, format: :long) : "未登録" %>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="mb-4">
+            <%= image_tag @shop.display_image, class: "img-fluid rounded-4 shadow-sm w-100", alt: @shop.name, style: "max-height: 360px; object-fit: cover;" %>
+          </div>
+
+          <div class="mb-4">
+            <h2 class="h5 mb-3">店舗概要</h2>
+            <p class="text-secondary mb-0"><%= simple_format(@shop.description.presence || "店舗説明はまだ登録されていません。") %></p>
+          </div>
+
+          <div>
+            <h2 class="h5 mb-3">基本情報</h2>
+            <dl class="row mb-0">
+              <dt class="col-sm-4 text-secondary">営業時間</dt>
+              <dd class="col-sm-8"><%= @shop.business_hours.presence || "未登録" %></dd>
+
+              <dt class="col-sm-4 text-secondary">定休日</dt>
+              <dd class="col-sm-8"><%= @shop.closed_days.presence || "未登録" %></dd>
+
+              <dt class="col-sm-4 text-secondary">Wi-Fi</dt>
+              <dd class="col-sm-8"><%= @shop.wifi_available? ? "あり" : "なし" %></dd>
+
+              <dt class="col-sm-4 text-secondary">電源</dt>
+              <dd class="col-sm-8"><%= @shop.power_available? ? "あり" : "なし" %></dd>
+            </dl>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="card bg-body-tertiary border-0 h-100">
+            <div class="card-body p-4">
+              <h2 class="h5 mb-3">喫煙情報</h2>
+              <div class="d-grid gap-3">
+                <div class="rounded-3 bg-white border p-3">
+                  <div class="small text-secondary mb-1">電子タバコ</div>
+                  <div class="fw-semibold"><%= @shop.heated_tobacco_status_i18n %></div>
+                </div>
+                <div class="rounded-3 bg-white border p-3">
+                  <div class="small text-secondary mb-1">紙タバコ</div>
+                  <div class="fw-semibold"><%= @shop.papper_tobacco_status_i18n %></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

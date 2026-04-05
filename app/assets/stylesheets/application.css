@@ -114,3 +114,120 @@
 		width: 2.8rem;
 	}
 }
+
+.top-shop-section {
+	background: linear-gradient(180deg, #fffdf8 0%, #f5efe7 100%);
+}
+
+.top-shop-section__container {
+	max-width: 1440px;
+	padding-left: clamp(1.5rem, 5vw, 4rem);
+	padding-right: clamp(1.5rem, 5vw, 4rem);
+}
+
+.top-shop-block {
+	border-top: 1px solid rgba(93, 69, 46, 0.12);
+	padding-top: 1.75rem;
+}
+
+.top-shop-block__header {
+	align-items: end;
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.top-shop-block__title {
+	color: #1d1712;
+	font-size: clamp(1.45rem, 2vw, 2rem);
+	font-weight: 700;
+	letter-spacing: 0.03em;
+}
+
+.top-shop-block__subtitle {
+	color: #7a6b5e;
+	font-size: 0.95rem;
+	line-height: 1.6;
+}
+
+.top-shop-block__link {
+	color: #5d452e;
+	font-size: 0.95rem;
+	font-weight: 700;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.top-shop-block__link:hover,
+.top-shop-block__link:focus {
+	color: #3f2e20;
+	text-decoration: underline;
+}
+
+.top-shop-card {
+	color: inherit;
+	display: block;
+	height: 100%;
+	transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.top-shop-card:hover,
+.top-shop-card:focus {
+	opacity: 0.94;
+	transform: translateY(-2px);
+}
+
+.top-shop-card__image-wrap {
+	aspect-ratio: 1 / 1;
+	background: #e8dfd4;
+	overflow: hidden;
+	width: 100%;
+}
+
+.top-shop-card__image {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}
+
+.top-shop-card__body {
+	padding-top: 0.85rem;
+	text-align: left;
+}
+
+.top-shop-card__name {
+	color: #1f1914;
+	font-size: 1.05rem;
+	font-weight: 700;
+	line-height: 1.4;
+	margin-bottom: 0.4rem;
+	min-height: 2.9rem;
+}
+
+.top-shop-card__meta {
+	color: #5d452e;
+	font-size: 0.92rem;
+	font-weight: 600;
+	margin-bottom: 0.35rem;
+}
+
+.top-shop-card__address {
+	color: #8a7e73;
+	font-size: 0.9rem;
+	line-height: 1.55;
+	margin-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+	.top-shop-block__header {
+		align-items: flex-start;
+		flex-direction: column;
+	}
+
+	.top-shop-card__name {
+		font-size: 0.98rem;
+		min-height: auto;
+	}
+}

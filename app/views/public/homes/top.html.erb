@@ -40,3 +40,65 @@
     </div>
   </div>
 </section>
+
+<section class="top-shop-section py-5 py-lg-6">
+  <div class="container top-shop-section__container">
+    <div class="top-shop-block">
+      <div class="top-shop-block__header">
+        <div>
+          <h2 class="top-shop-block__title mb-1">新着店舗</h2>
+          <p class="top-shop-block__subtitle mb-0">最近追加された店舗をチェックできます。</p>
+        </div>
+        <%= link_to shops_path, class: "top-shop-block__link" do %>
+          一覧を見る
+        <% end %>
+      </div>
+
+      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4">
+        <% @new_shops.each do |shop| %>
+          <div class="col">
+            <%= link_to shop_path(shop), class: "top-shop-card text-decoration-none" do %>
+              <div class="top-shop-card__image-wrap">
+                <%= image_tag shop.display_image, class: "top-shop-card__image", alt: shop.name %>
+              </div>
+              <div class="top-shop-card__body">
+                <h3 class="top-shop-card__name"><%= shop.name %></h3>
+                <p class="top-shop-card__meta"><%= shop.area %></p>
+                <p class="top-shop-card__address"><%= truncate(shop.address, length: 30) %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="top-shop-block mt-5">
+      <div class="top-shop-block__header">
+        <div>
+          <h2 class="top-shop-block__title mb-1">最近更新のあった店舗</h2>
+          <p class="top-shop-block__subtitle mb-0">更新日時が新しい順に店舗情報を表示しています。</p>
+        </div>
+        <%= link_to shops_path, class: "top-shop-block__link" do %>
+          一覧を見る
+        <% end %>
+      </div>
+
+      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4">
+        <% @recently_updated_shops.each do |shop| %>
+          <div class="col">
+            <%= link_to shop_path(shop), class: "top-shop-card text-decoration-none" do %>
+              <div class="top-shop-card__image-wrap">
+                <%= image_tag shop.display_image, class: "top-shop-card__image", alt: shop.name %>
+              </div>
+              <div class="top-shop-card__body">
+                <h3 class="top-shop-card__name"><%= shop.name %></h3>
+                <p class="top-shop-card__meta"><%= shop.last_reported_at.present? ? l(shop.last_reported_at, format: :short) : "未更新" %></p>
+                <p class="top-shop-card__address"><%= truncate(shop.address, length: 30) %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

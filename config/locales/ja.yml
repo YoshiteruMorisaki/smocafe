@@ -1,0 +1,33 @@
+ja:
+  activerecord:
+    models:
+      shop: 店舗
+    attributes:
+      shop:
+        name: 店舗名
+        area: エリア
+        address: 住所
+        business_hours: 営業時間
+        closed_days: 定休日
+        image: 店舗画像
+        heated_tobacco_status: 電子タバコ可否
+        papper_tobacco_status: 紙タバコ可否
+        wifi_available: Wi-Fi有無
+        power_available: 電源有無
+        description: 店舗説明文
+        last_reported_at: 最終更新日
+        heated_tobacco_statuses:
+          unknown: 不明
+          allowed: 可
+          disallowed: 不可
+        papper_tobacco_statuses:
+          unknown: 不明
+          allowed: 可
+          disallowed: 不可
+  time:
+    formats:
+      short: "%Y/%m/%d %H:%M"
+      long: "%Y年%m月%d日 %H:%M"
+  errors:
+    messages:
+      inclusion: は一覧にありません

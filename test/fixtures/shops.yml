@@ -1,0 +1,25 @@
+shibuya_lounge:
+  name: 渋谷ラウンジ
+  area: 渋谷
+  address: 東京都渋谷区道玄坂1-1-1
+  business_hours: 09:00-22:00
+  closed_days: 年中無休
+  heated_tobacco_status: allowed
+  papper_tobacco_status: disallowed
+  wifi_available: true
+  power_available: true
+  description: 駅近で作業しやすい喫煙可能カフェ。
+  last_reported_at: 2026-04-01 10:00:00
+
+shinjuku_smoke:
+  name: 新宿スモークカフェ
+  area: 新宿
+  address: 東京都新宿区新宿2-2-2
+  business_hours: 10:00-23:00
+  closed_days: 日曜
+  heated_tobacco_status: unknown
+  papper_tobacco_status: allowed
+  wifi_available: false
+  power_available: true
+  description: 紙タバコ可の落ち着いた店舗です。
+  last_reported_at: 2026-03-30 18:30:00

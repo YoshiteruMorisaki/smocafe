@@ -1,82 +1,133 @@
 <% content_for :title, "Smocafe | 店舗一覧" %>
 
-<div class="container py-5">
-  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
-    <div>
-      <h1 class="h2 mb-1"><%= @selected_area.present? ? "#{@selected_area}エリアの店舗一覧" : "喫煙可能なカフェ一覧" %></h1>
-      <p class="text-secondary mb-0">
-        <%= @selected_area.present? ? "#{@selected_area}の店舗に絞って表示しています。" : "エリアや喫煙可否を見ながら店舗情報を確認できます。" %>
-      </p>
-    </div>
-    <div class="text-secondary small">
-      表示店舗数: <span class="fw-semibold text-dark"><%= @shops.size %></span>
-      <span class="mx-2">/</span>
-      全店舗数: <span class="fw-semibold text-dark"><%= @total_shops_count %></span>
-    </div>
-  </div>
+<div class="container py-5 shop-index-page">
+  <div class="shop-index-layout">
+    <aside class="shop-index-sidebar" aria-label="詳細条件で絞り込み">
+      <div class="shop-filter-panel">
+        <div class="shop-filter-panel__heading">絞り込む</div>
+        <%= form_with url: shops_path, method: :get, local: true, class: "shop-filter-form" do %>
+          <% if @selected_area.present? %>
+            <%= hidden_field_tag :area, @selected_area %>
+          <% end %>
 
-  <section class="shop-area-filter mb-5" aria-label="エリア絞り込み">
-    <div class="shop-area-filter__header">
-      <span class="shop-area-filter__icon" aria-hidden="true">
-        <i class="fa-solid fa-map-location-dot"></i>
-      </span>
-      <div>
-        <h2 class="shop-area-filter__title mb-1">エリアから探す</h2>
-        <p class="shop-area-filter__text mb-0">5か所のエリアから選んで、店舗一覧を絞り込めます。</p>
+          <section class="shop-filter-group">
+            <h2 class="shop-filter-group__title">コア検索</h2>
+            <% @filter_options.slice(:papper_tobacco_allowed, :heated_tobacco_allowed).each do |key, label| %>
+              <label class="shop-filter-option">
+                <span class="shop-filter-option__label"><%= label %></span>
+                <span class="shop-filter-option__check">
+                  <%= check_box_tag "filters[#{key}]", "1", @selected_filters.key?(key.to_s), class: "shop-filter-option__input" %>
+                  <span class="shop-filter-option__indicator"></span>
+                </span>
+              </label>
+            <% end %>
+          </section>
+
+          <section class="shop-filter-group">
+            <h2 class="shop-filter-group__title">条件検索</h2>
+            <% @filter_options.slice(:wifi_available, :power_available).each do |key, label| %>
+              <label class="shop-filter-option">
+                <span class="shop-filter-option__label"><%= label %></span>
+                <span class="shop-filter-option__check">
+                  <%= check_box_tag "filters[#{key}]", "1", @selected_filters.key?(key.to_s), class: "shop-filter-option__input" %>
+                  <span class="shop-filter-option__indicator"></span>
+                </span>
+              </label>
+            <% end %>
+          </section>
+
+          <div class="shop-filter-form__actions">
+            <%= submit_tag "絞り込む", class: "btn shop-filter-form__submit" %>
+            <%= link_to "条件をクリア", shops_path(@selected_area.present? ? { area: @selected_area } : {}), class: "shop-filter-form__clear" %>
+          </div>
+        <% end %>
       </div>
-    </div>
+    </aside>
 
-    <div class="shop-area-filter__chips">
-      <%= link_to "すべて", shops_path, class: ["shop-area-filter__chip", (@selected_area.blank? ? "is-active" : nil)] %>
-      <% @areas.each do |area| %>
-        <%= link_to area, shops_path(area: area), class: ["shop-area-filter__chip", (@selected_area == area ? "is-active" : nil)] %>
-      <% end %>
-    </div>
-  </section>
+    <section class="shop-index-content">
+      <header class="shop-index-header">
+        <div>
+          <h1 class="shop-index-header__title"><%= @selected_area.present? ? "#{@selected_area}エリアの店舗一覧" : "喫煙可能なカフェ一覧" %></h1>
+          <p class="shop-index-header__text mb-0">
+            <%= @selected_area.present? ? "#{@selected_area}の店舗に絞って表示しています。" : "エリアや喫煙可否を見ながら店舗情報を確認できます。" %>
+          </p>
+        </div>
+        <div class="shop-index-header__count">
+          表示店舗数: <span class="fw-semibold text-dark"><%= @shops.size %></span>
+          <span class="mx-2">/</span>
+          全店舗数: <span class="fw-semibold text-dark"><%= @total_shops_count %></span>
+        </div>
+      </header>
 
-  <% if @shops.any? %>
-    <div class="row g-4">
-      <% @shops.each do |shop| %>
-        <div class="col-lg-6">
-          <div class="card border-0 shadow-sm h-100">
-            <%= image_tag shop.display_image, class: "card-img-top", alt: shop.name, style: "height: 220px; object-fit: cover;" %>
-            <div class="card-body p-4 d-flex flex-column">
-              <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
-                <div>
-                  <p class="text-success fw-semibold small mb-1"><%= shop.area %></p>
-                  <h2 class="h4 mb-1"><%= shop.name %></h2>
-                  <p class="text-secondary mb-0"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
-                </div>
-                <span class="badge text-bg-light border"><%= l(shop.last_reported_at, format: :short) if shop.last_reported_at.present? %></span>
-              </div>
-
-              <div class="d-flex flex-wrap gap-2 mb-3">
-                <span class="badge text-bg-success-subtle text-success-emphasis">電子: <%= shop.heated_tobacco_status_i18n %></span>
-                <span class="badge text-bg-warning-subtle text-warning-emphasis">紙: <%= shop.papper_tobacco_status_i18n %></span>
-                <span class="badge text-bg-info-subtle text-info-emphasis">Wi-Fi: <%= shop.wifi_available? ? "あり" : "なし" %></span>
-                <span class="badge text-bg-secondary">電源: <%= shop.power_available? ? "あり" : "なし" %></span>
-              </div>
-
-              <dl class="row small text-secondary mb-3">
-                <dt class="col-sm-4">営業時間</dt>
-                <dd class="col-sm-8"><%= shop.business_hours.presence || "未登録" %></dd>
-                <dt class="col-sm-4">定休日</dt>
-                <dd class="col-sm-8"><%= shop.closed_days.presence || "未登録" %></dd>
-              </dl>
-
-              <p class="text-secondary flex-grow-1 mb-4"><%= truncate(shop.description.to_s, length: 110) %></p>
-
-              <%= link_to shop_path(shop), class: "btn btn-outline-success mt-auto align-self-start" do %>
-                <i class="fa-solid fa-store me-1"></i>詳細を見る
-              <% end %>
-            </div>
+      <section class="shop-area-filter" aria-label="エリア絞り込み">
+        <div class="shop-area-filter__header">
+          <span class="shop-area-filter__icon" aria-hidden="true">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </span>
+          <div>
+            <h2 class="shop-area-filter__title mb-1">エリアから探す</h2>
+            <p class="shop-area-filter__text mb-0">5か所のエリアから選んで、店舗一覧を絞り込めます。</p>
           </div>
         </div>
+
+        <div class="shop-area-filter__chips">
+          <%= link_to "すべて", shops_path(request.query_parameters.except("area")), class: ["shop-area-filter__chip", (@selected_area.blank? ? "is-active" : nil)] %>
+          <% @areas.each do |area| %>
+            <%= link_to area, shops_path(request.query_parameters.merge(area: area)), class: ["shop-area-filter__chip", (@selected_area == area ? "is-active" : nil)] %>
+          <% end %>
+        </div>
+      </section>
+
+      <% if @shops.any? %>
+        <div class="shop-results">
+          <% @shops.each do |shop| %>
+            <article class="shop-result-card">
+              <div class="shop-result-card__media">
+                <%= image_tag shop.display_image, class: "shop-result-card__image", alt: shop.name %>
+              </div>
+
+              <div class="shop-result-card__body">
+                <div class="shop-result-card__heading">
+                  <div>
+                    <p class="shop-result-card__area"><%= shop.area %></p>
+                    <h2 class="shop-result-card__name"><%= shop.name %></h2>
+                    <p class="shop-result-card__address"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
+                  </div>
+                  <span class="shop-result-card__updated"><%= l(shop.last_reported_at, format: :short) if shop.last_reported_at.present? %></span>
+                </div>
+
+                <div class="shop-result-card__badges">
+                  <span class="badge text-bg-success-subtle text-success-emphasis">電子: <%= shop.heated_tobacco_status_i18n %></span>
+                  <span class="badge text-bg-warning-subtle text-warning-emphasis">紙: <%= shop.papper_tobacco_status_i18n %></span>
+                  <span class="badge text-bg-info-subtle text-info-emphasis">Wi-Fi: <%= shop.wifi_available? ? "あり" : "なし" %></span>
+                  <span class="badge text-bg-secondary">電源: <%= shop.power_available? ? "あり" : "なし" %></span>
+                </div>
+
+                <dl class="shop-result-card__details">
+                  <div class="shop-result-card__detail-row">
+                    <dt>営業時間</dt>
+                    <dd><%= shop.business_hours.presence || "未登録" %></dd>
+                  </div>
+                  <div class="shop-result-card__detail-row">
+                    <dt>定休日</dt>
+                    <dd><%= shop.closed_days.presence || "未登録" %></dd>
+                  </div>
+                </dl>
+
+                <p class="shop-result-card__description"><%= truncate(shop.description.to_s, length: 130) %></p>
+
+                <%= link_to shop_path(shop), class: "btn btn-outline-success shop-result-card__link" do %>
+                  詳細を見る
+                <% end %>
+              </div>
+            </article>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="alert alert-light border shadow-sm mb-0" role="status">
+          条件に一致する店舗はまだ登録されていません。
+        </div>
       <% end %>
-    </div>
-  <% else %>
-    <div class="alert alert-light border shadow-sm mb-0" role="status">
-      条件に一致する店舗はまだ登録されていません。
-    </div>
-  <% end %>
+    </section>
+  </div>
 </div>

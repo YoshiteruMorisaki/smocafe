@@ -654,6 +654,29 @@
 	min-width: 8rem;
 }
 
+.pagination .page-link {
+	box-shadow: none;
+	min-width: 2.5rem;
+	text-align: center;
+	transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.pagination .page-link:hover,
+.pagination .page-link:focus {
+	background: rgba(33, 132, 74, 0.12);
+	color: #1f6a3b;
+}
+
+.pagination .page-item.active .page-link {
+	background: #e8f4ec;
+	color: #1f6a3b;
+	font-weight: 700;
+}
+
+.pagination .page-item.disabled .page-link {
+	color: #9a938d;
+}
+
 .shop-mobile-offcanvas {
 	background: #fbf8f2;
 	max-width: 92vw;

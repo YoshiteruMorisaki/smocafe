@@ -8,6 +8,24 @@ class AdminShopsTest < ActionDispatch::IntegrationTest
     }
   end
 
+  def create_admin_pagination_shops(count:)
+    count.times do |index|
+      Shop.create!(
+        name: "管理ページネーション#{index}",
+        area: Shop::AREAS[index % Shop::AREAS.size],
+        address: "東京都管理区#{index}-#{index}-#{index}",
+        business_hours: "09:00-22:00",
+        closed_days: "なし",
+        heated_tobacco_status: :allowed,
+        papper_tobacco_status: :allowed,
+        wifi_available: true,
+        power_available: true,
+        description: "管理側ページネーション確認用の店舗#{index}",
+        last_reported_at: Time.zone.parse("2026-05-10 10:00") + index.minutes
+      )
+    end
+  end
+
   test "admin can create update and destroy shop" do
     assert_difference("Shop.count", 1) do
       post admin_shops_path, params: {
@@ -67,5 +85,22 @@ class AdminShopsTest < ActionDispatch::IntegrationTest
 
     get admin_shops_path
     assert_redirected_to admin_sign_in_path
+  end
+
+  test "admin shops index paginates shop records" do
+    create_admin_pagination_shops(count: 15)
+
+    get admin_shops_path
+
+    assert_response :success
+    assert_match "管理ページネーション14", response.body
+    assert_no_match "管理ページネーション2", response.body
+    assert_select "nav[aria-label='ページネーション']"
+
+    get admin_shops_path(page: 2)
+
+    assert_response :success
+    assert_match "管理ページネーション2", response.body
+    assert_match shops(:shibuya_lounge).name, response.body
   end
 end

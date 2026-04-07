@@ -33,4 +33,29 @@ class PublicAuthenticationTest < ActionDispatch::IntegrationTest
     delete users_sign_out_path
     assert_redirected_to root_path
   end
+
+  test "user can update profile without changing password" do
+    post users_sign_in_path, params: {
+      email_address: users(:active_user).email_address,
+      password: "password"
+    }
+
+    patch users_path, params: {
+      user: {
+        name: "Updated User",
+        email_address: users(:active_user).email_address,
+        password: "",
+        password_confirmation: ""
+      }
+    }
+
+    assert_redirected_to users_my_page_path
+    follow_redirect!
+    assert_response :success
+    assert_match "会員情報を更新しました。", response.body
+
+    users(:active_user).reload
+    assert_equal "Updated User", users(:active_user).name
+    assert users(:active_user).authenticate("password")
+  end
 end

@@ -35,7 +35,12 @@ class Public::UsersController < Public::ApplicationController
 
   def user_params
     permitted = params.require(:user).permit(:name, :email_address, :password, :password_confirmation)
-    permitted.except!(:password, :password_confirmation) if permitted[:password].blank?
+
+    if permitted[:password].blank?
+      permitted.delete(:password)
+      permitted.delete(:password_confirmation)
+    end
+
     permitted
   end
 end

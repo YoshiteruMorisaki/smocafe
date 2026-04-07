@@ -1,0 +1,36 @@
+<%= form_with url: shops_path, method: :get, local: true, class: ["shop-filter-form", local_assigns[:form_class]].compact.join(" ") do %>
+  <% if selected_area.present? %>
+    <%= hidden_field_tag :area, selected_area %>
+  <% end %>
+
+  <section class="shop-filter-group">
+    <h2 class="shop-filter-group__title">コア検索</h2>
+    <% filter_options.slice(:papper_tobacco_allowed, :heated_tobacco_allowed).each do |key, label| %>
+      <label class="shop-filter-option">
+        <span class="shop-filter-option__label"><%= label %></span>
+        <span class="shop-filter-option__check">
+          <%= check_box_tag "filters[#{key}]", "1", selected_filters.key?(key.to_s), class: "shop-filter-option__input" %>
+          <span class="shop-filter-option__indicator"></span>
+        </span>
+      </label>
+    <% end %>
+  </section>
+
+  <section class="shop-filter-group">
+    <h2 class="shop-filter-group__title">条件検索</h2>
+    <% filter_options.slice(:wifi_available, :power_available).each do |key, label| %>
+      <label class="shop-filter-option">
+        <span class="shop-filter-option__label"><%= label %></span>
+        <span class="shop-filter-option__check">
+          <%= check_box_tag "filters[#{key}]", "1", selected_filters.key?(key.to_s), class: "shop-filter-option__input" %>
+          <span class="shop-filter-option__indicator"></span>
+        </span>
+      </label>
+    <% end %>
+  </section>
+
+  <div class="shop-filter-form__actions">
+    <%= submit_tag local_assigns.fetch(:submit_label, "絞り込む"), class: "btn shop-filter-form__submit" %>
+    <%= link_to "条件をクリア", clear_path, class: "shop-filter-form__clear" %>
+  </div>
+<% end %>

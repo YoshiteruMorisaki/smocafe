@@ -48,6 +48,20 @@ class AdminShopsTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_shops_path
   end
 
+  test "admin can navigate from dashboard to shops index and edit" do
+    get admin_root_path
+    assert_response :success
+    assert_select "a[href='#{admin_shops_path}']", text: /一覧を見る/
+
+    get admin_shops_path
+    assert_response :success
+    assert_select "a[href='#{edit_admin_shop_path(shops(:shibuya_lounge))}']", text: /編集/
+
+    get edit_admin_shop_path(shops(:shibuya_lounge))
+    assert_response :success
+    assert_match shops(:shibuya_lounge).name, response.body
+  end
+
   test "admin shops page requires authentication" do
     delete admin_sign_out_path
 

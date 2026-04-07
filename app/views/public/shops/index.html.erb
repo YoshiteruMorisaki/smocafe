@@ -103,6 +103,8 @@
             </article>
           <% end %>
         </div>
+
+        <%= render "shared/pagination", collection: @shops %>
       <% else %>
         <div class="alert alert-light border shadow-sm mb-0" role="status">
           条件に一致する店舗はまだ登録されていません。

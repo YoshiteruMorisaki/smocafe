@@ -2,7 +2,7 @@ class Admin::ShopsController < Admin::ApplicationController
   before_action :set_shop, only: %i[edit update destroy]
 
   def index
-    @shops = Shop.recent_first
+    @shops = paginate_collection(Shop.recent_first)
   end
 
   def new

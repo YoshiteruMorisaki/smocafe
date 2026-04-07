@@ -1,0 +1,6 @@
+<div class="<%= ["shop-area-filter__chips", local_assigns[:chips_class]].compact.join(" ") %>">
+  <%= link_to "すべて", shops_path(request.query_parameters.except("area")), class: ["shop-area-filter__chip", (@selected_area.blank? ? "is-active" : nil)] %>
+  <% areas.each do |area| %>
+    <%= link_to area, shops_path(request.query_parameters.merge(area: area)), class: ["shop-area-filter__chip", (@selected_area == area ? "is-active" : nil)] %>
+  <% end %>
+</div>

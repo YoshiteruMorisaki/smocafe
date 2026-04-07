@@ -5,6 +5,11 @@ class PublicShopsTest < ActionDispatch::IntegrationTest
     get shops_path
     assert_response :success
     assert_match shops(:shibuya_lounge).name, response.body
+    assert_select "section.shop-index-mobile-tools.d-lg-none"
+    assert_select "button[data-bs-target='#shopMobileFilters']", text: /フィルタを開く/
+    assert_select "#shopMobileFilters.d-lg-none", text: /条件を選ぶ/
+    assert_select "aside.shop-index-sidebar.d-none.d-lg-block"
+    assert_select "section.shop-area-filter.d-none.d-lg-block"
 
     get shop_path(shops(:shibuya_lounge))
     assert_response :success

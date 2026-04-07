@@ -12,7 +12,10 @@
         <div class="card-body p-4">
           <div class="fs-2 text-primary mb-3"><i class="fa-solid fa-store"></i></div>
           <h2 class="h5">店舗管理</h2>
-          <p class="text-secondary mb-0">掲載店舗の登録・編集・削除をここから行います。</p>
+          <p class="text-secondary">掲載店舗の登録・編集・削除をここから行います。</p>
+          <%= link_to admin_shops_path, class: "btn btn-outline-primary" do %>
+            一覧を見る
+          <% end %>
         </div>
       </div>
     </div>

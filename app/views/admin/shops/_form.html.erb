@@ -1,0 +1,86 @@
+<%= form_with model: [:admin, shop], class: "row g-4" do |form| %>
+  <div class="col-12">
+    <%= form.label :name, class: "form-label" %>
+    <%= form.text_field :name, class: "form-control", required: true %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :area, class: "form-label" %>
+    <%= form.select :area, Shop::AREAS, {}, class: "form-select", required: true %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :address, class: "form-label" %>
+    <%= form.text_field :address, class: "form-control", required: true %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :business_hours, class: "form-label" %>
+    <%= form.text_field :business_hours, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :closed_days, class: "form-label" %>
+    <%= form.text_field :closed_days, class: "form-control" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :heated_tobacco_status, class: "form-label" %>
+    <%= form.select :heated_tobacco_status, Shop.heated_tobacco_statuses.keys.map { |key| [Shop.human_enum_name(:heated_tobacco_status, key), key] }, {}, class: "form-select" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :papper_tobacco_status, class: "form-label" %>
+    <%= form.select :papper_tobacco_status, Shop.papper_tobacco_statuses.keys.map { |key| [Shop.human_enum_name(:papper_tobacco_status, key), key] }, {}, class: "form-select" %>
+  </div>
+
+  <div class="col-md-6">
+    <%= form.label :last_reported_at, class: "form-label" %>
+    <%= form.datetime_local_field :last_reported_at, class: "form-control" %>
+  </div>
+
+  <div class="col-md-3">
+    <div class="form-check mt-md-4 pt-md-2">
+      <%= form.check_box :wifi_available, class: "form-check-input" %>
+      <%= form.label :wifi_available, class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="form-check mt-md-4 pt-md-2">
+      <%= form.check_box :power_available, class: "form-check-input" %>
+      <%= form.label :power_available, class: "form-check-label" %>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :description, class: "form-label" %>
+    <%= form.text_area :description, class: "form-control", rows: 5 %>
+  </div>
+
+  <div class="col-12">
+    <%= form.label :image, class: "form-label" %>
+    <%= form.file_field :image, class: "form-control", accept: "image/*" %>
+    <div class="form-text">未設定の場合は No_image.jpg を表示します。</div>
+  </div>
+
+  <% if shop.errors.any? %>
+    <div class="col-12">
+      <div class="alert alert-danger mb-0">
+        <p class="fw-semibold mb-2">入力内容を確認してください。</p>
+        <ul class="mb-0 ps-3">
+          <% shop.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="col-12 d-flex gap-2">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to admin_shops_path, class: "btn btn-outline-secondary" do %>
+      戻る
+    <% end %>
+  </div>
+<% end %>

@@ -1,0 +1,104 @@
+<% content_for :title, "Smocafe | トップ" %>
+
+<section
+  class="top-hero d-flex align-items-center"
+  style="background-image: linear-gradient(90deg, rgba(248, 240, 228, 0.88) 0%, rgba(248, 240, 228, 0.72) 36%, rgba(97, 68, 49, 0.18) 100%), url('<%= asset_path("top_bg.jpg") %>');"
+>
+  <div class="container py-3 py-lg-4">
+    <div class="row align-items-center g-4 g-xl-5 top-hero__inner">
+      <div class="col-lg-7 col-xl-6">
+        <div class="top-hero__copy pe-xl-4">
+          <p class="top-hero__brand mb-2">Smocafe</p>
+          <h1 class="top-hero__headline mb-3">
+            喫煙可能なカフェ探しを、<br>
+            もっとスマートに。
+          </h1>
+          <p class="top-hero__description mb-0">
+            Smocafeは、喫煙可能なカフェやひと息つける空間を見つけやすくするカフェ検索サービスです。
+            気になるエリアや今いる場所から、使いやすい一軒をすばやく探せます。
+          </p>
+        </div>
+      </div>
+
+      <div class="col-lg-5 col-xl-5 ms-lg-auto">
+        <div class="d-grid gap-2 top-hero__actions">
+          <%= link_to shops_path, class: "btn top-hero__action-btn" do %>
+            <span class="top-hero__action-icon">
+              <i class="fa-solid fa-map-location-dot"></i>
+            </span>
+            <span class="top-hero__action-label">エリアから探す</span>
+          <% end %>
+
+          <%= link_to root_path, class: "btn top-hero__action-btn" do %>
+            <span class="top-hero__action-icon">
+              <i class="fa-solid fa-location-crosshairs"></i>
+            </span>
+            <span class="top-hero__action-label">現在地から探す</span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="top-shop-section py-5 py-lg-6">
+  <div class="container top-shop-section__container">
+    <div class="top-shop-block">
+      <div class="top-shop-block__header">
+        <div>
+          <h2 class="top-shop-block__title mb-1">新着店舗</h2>
+          <p class="top-shop-block__subtitle mb-0">最近追加された店舗をチェックできます。</p>
+        </div>
+        <%= link_to shops_path, class: "top-shop-block__link" do %>
+          一覧を見る
+        <% end %>
+      </div>
+
+      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4">
+        <% @new_shops.each do |shop| %>
+          <div class="col">
+            <%= link_to shop_path(shop), class: "top-shop-card text-decoration-none" do %>
+              <div class="top-shop-card__image-wrap">
+                <%= image_tag shop.display_image, class: "top-shop-card__image", alt: shop.name %>
+              </div>
+              <div class="top-shop-card__body">
+                <h3 class="top-shop-card__name"><%= shop.name %></h3>
+                <p class="top-shop-card__meta"><%= shop.area %></p>
+                <p class="top-shop-card__address"><%= truncate(shop.address, length: 30) %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="top-shop-block mt-5">
+      <div class="top-shop-block__header">
+        <div>
+          <h2 class="top-shop-block__title mb-1">最近更新のあった店舗</h2>
+          <p class="top-shop-block__subtitle mb-0">更新日時が新しい順に店舗情報を表示しています。</p>
+        </div>
+        <%= link_to shops_path, class: "top-shop-block__link" do %>
+          一覧を見る
+        <% end %>
+      </div>
+
+      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-4">
+        <% @recently_updated_shops.each do |shop| %>
+          <div class="col">
+            <%= link_to shop_path(shop), class: "top-shop-card text-decoration-none" do %>
+              <div class="top-shop-card__image-wrap">
+                <%= image_tag shop.display_image, class: "top-shop-card__image", alt: shop.name %>
+              </div>
+              <div class="top-shop-card__body">
+                <h3 class="top-shop-card__name"><%= shop.name %></h3>
+                <p class="top-shop-card__meta"><%= shop.last_reported_at.present? ? l(shop.last_reported_at, format: :short) : "未更新" %></p>
+                <p class="top-shop-card__address"><%= truncate(shop.address, length: 30) %></p>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

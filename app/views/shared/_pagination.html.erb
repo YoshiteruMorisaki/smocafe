@@ -1,0 +1,45 @@
+<% return unless collection.respond_to?(:total_pages) && collection.total_pages > 1 %>
+
+<nav class="d-flex justify-content-center mt-4" aria-label="ページネーション">
+  <ul class="pagination pagination-sm flex-wrap align-items-center gap-1 mb-0">
+    <li class="page-item <%= "disabled" unless collection.prev_page %>">
+      <% if collection.prev_page %>
+        <%= link_to pagination_link_params(collection.prev_page), class: "page-link rounded border-0 text-secondary px-3" do %>
+          <i class="fa-solid fa-chevron-left"></i>
+        <% end %>
+      <% else %>
+        <span class="page-link rounded border-0 text-secondary px-3 bg-body-tertiary">
+          <i class="fa-solid fa-chevron-left"></i>
+        </span>
+      <% end %>
+    </li>
+
+    <% pagination_series(collection).each do |item| %>
+      <% if item == :gap %>
+        <li class="page-item disabled">
+          <span class="page-link rounded border-0 bg-transparent text-secondary px-2">...</span>
+        </li>
+      <% elsif item == collection.current_page %>
+        <li class="page-item active" aria-current="page">
+          <span class="page-link rounded border-0 bg-primary-subtle text-primary-emphasis px-3"><%= item %></span>
+        </li>
+      <% else %>
+        <li class="page-item">
+          <%= link_to item, pagination_link_params(item), class: "page-link rounded border-0 text-secondary px-3" %>
+        </li>
+      <% end %>
+    <% end %>
+
+    <li class="page-item <%= "disabled" unless collection.next_page %>">
+      <% if collection.next_page %>
+        <%= link_to pagination_link_params(collection.next_page), class: "page-link rounded border-0 text-secondary px-3" do %>
+          <i class="fa-solid fa-chevron-right"></i>
+        <% end %>
+      <% else %>
+        <span class="page-link rounded border-0 text-secondary px-3 bg-body-tertiary">
+          <i class="fa-solid fa-chevron-right"></i>
+        </span>
+      <% end %>
+    </li>
+  </ul>
+</nav>

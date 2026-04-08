@@ -1,0 +1,157 @@
+<% content_for :title, "Smocafe | 店舗一覧" %>
+
+<% clear_filters_path = shops_path(@selected_area.present? ? { area: @selected_area } : {}) %>
+<% active_filter_count = @selected_filters.size + (@selected_area.present? ? 1 : 0) %>
+
+<div class="container py-5 shop-index-page">
+  <section class="shop-index-mobile-tools d-lg-none" aria-label="スマートフォン向け絞り込みメニュー">
+    <div class="shop-index-mobile-tools__summary">
+      <div>
+        <p class="shop-index-mobile-tools__eyebrow mb-1">スマホ向け検索</p>
+        <p class="shop-index-mobile-tools__text mb-0">
+          <%= @selected_area.present? ? "#{@selected_area}エリアを表示中" : "すべてのエリアを表示中" %>
+          <% if active_filter_count.positive? %>
+            ・絞り込み <%= active_filter_count %> 件
+          <% end %>
+        </p>
+      </div>
+      <button class="btn shop-index-mobile-tools__button" type="button" data-bs-toggle="offcanvas" data-bs-target="#shopMobileFilters" aria-controls="shopMobileFilters">
+        <i class="fa-solid fa-sliders me-2"></i>フィルタを開く
+      </button>
+    </div>
+  </section>
+
+  <div class="shop-index-layout">
+    <aside class="shop-index-sidebar d-none d-lg-block" aria-label="詳細条件で絞り込み">
+      <div class="shop-filter-panel">
+        <div class="shop-filter-panel__heading">絞り込む</div>
+        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, clear_path: clear_filters_path %>
+      </div>
+    </aside>
+
+    <section class="shop-index-content">
+      <header class="shop-index-header">
+        <div>
+          <h1 class="shop-index-header__title"><%= @selected_area.present? ? "#{@selected_area}エリアの店舗一覧" : "喫煙可能なカフェ一覧" %></h1>
+          <p class="shop-index-header__text mb-0">
+            <%= @selected_area.present? ? "#{@selected_area}の店舗に絞って表示しています。" : "エリアや喫煙可否を見ながら店舗情報を確認できます。" %>
+          </p>
+        </div>
+        <div class="shop-index-header__count">
+          表示店舗数: <span class="fw-semibold text-dark"><%= @shops.size %></span>
+          <span class="mx-2">/</span>
+          全店舗数: <span class="fw-semibold text-dark"><%= @total_shops_count %></span>
+        </div>
+      </header>
+
+      <section class="shop-area-filter d-none d-lg-block" aria-label="エリア絞り込み">
+        <div class="shop-area-filter__header">
+          <span class="shop-area-filter__icon" aria-hidden="true">
+            <i class="fa-solid fa-map-location-dot"></i>
+          </span>
+          <div>
+            <h2 class="shop-area-filter__title mb-1">エリアから探す</h2>
+            <p class="shop-area-filter__text mb-0">5か所のエリアから選んで、店舗一覧を絞り込めます。</p>
+          </div>
+        </div>
+
+        <%= render "area_chips", areas: @areas %>
+      </section>
+
+      <% if @shops.any? %>
+        <div class="shop-results">
+          <% @shops.each do |shop| %>
+            <article class="shop-result-card">
+              <div class="shop-result-card__media">
+                <%= image_tag shop.display_image, class: "shop-result-card__image", alt: shop.name %>
+              </div>
+
+              <div class="shop-result-card__body">
+                <div class="shop-result-card__heading">
+                  <div>
+                    <p class="shop-result-card__area"><%= shop.area %></p>
+                    <h2 class="shop-result-card__name"><%= shop.name %></h2>
+                    <p class="shop-result-card__address"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
+                  </div>
+                  <span class="shop-result-card__updated"><%= l(shop.last_reported_at, format: :short) if shop.last_reported_at.present? %></span>
+                </div>
+
+                <div class="shop-result-card__badges">
+                  <span class="badge text-bg-success-subtle text-success-emphasis">電子: <%= shop.heated_tobacco_status_i18n %></span>
+                  <span class="badge text-bg-warning-subtle text-warning-emphasis">紙: <%= shop.papper_tobacco_status_i18n %></span>
+                  <span class="badge text-bg-info-subtle text-info-emphasis">Wi-Fi: <%= shop.wifi_available? ? "あり" : "なし" %></span>
+                  <span class="badge text-bg-secondary">電源: <%= shop.power_available? ? "あり" : "なし" %></span>
+                </div>
+
+                <dl class="shop-result-card__details">
+                  <div class="shop-result-card__detail-row">
+                    <dt>営業時間</dt>
+                    <dd><%= shop.business_hours.presence || "未登録" %></dd>
+                  </div>
+                  <div class="shop-result-card__detail-row">
+                    <dt>定休日</dt>
+                    <dd><%= shop.closed_days.presence || "未登録" %></dd>
+                  </div>
+                </dl>
+
+                <p class="shop-result-card__description"><%= truncate(shop.description.to_s, length: 130) %></p>
+
+                <%= link_to shop_path(shop), class: "btn btn-outline-success shop-result-card__link" do %>
+                  詳細を見る
+                <% end %>
+              </div>
+            </article>
+          <% end %>
+        </div>
+
+        <%= render "shared/pagination", collection: @shops %>
+      <% else %>
+        <div class="alert alert-light border shadow-sm mb-0" role="status">
+          条件に一致する店舗はまだ登録されていません。
+        </div>
+      <% end %>
+    </section>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-start shop-mobile-offcanvas d-lg-none" tabindex="-1" id="shopMobileFilters" aria-labelledby="shopMobileFiltersLabel">
+  <div class="offcanvas-header shop-mobile-offcanvas__header">
+    <div>
+      <p class="shop-mobile-offcanvas__eyebrow mb-1">検索メニュー</p>
+      <h2 class="offcanvas-title mb-0" id="shopMobileFiltersLabel">条件を選ぶ</h2>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body shop-mobile-offcanvas__body">
+    <section class="shop-mobile-filter-section" aria-label="エリア絞り込み">
+      <div class="shop-mobile-filter-section__header">
+        <span class="shop-mobile-filter-section__icon" aria-hidden="true">
+          <i class="fa-solid fa-map-location-dot"></i>
+        </span>
+        <div>
+          <h3 class="shop-mobile-filter-section__title mb-1">エリアから探す</h3>
+          <p class="shop-mobile-filter-section__text mb-0">エリア選択はそのまま結果に反映されます。</p>
+        </div>
+      </div>
+
+      <%= render "area_chips", areas: @areas, chips_class: "shop-area-filter__chips--stacked" %>
+    </section>
+
+    <section class="shop-mobile-filter-section" aria-label="詳細条件で絞り込み">
+      <div class="shop-mobile-filter-section__header">
+        <span class="shop-mobile-filter-section__icon" aria-hidden="true">
+          <i class="fa-solid fa-sliders"></i>
+        </span>
+        <div>
+          <h3 class="shop-mobile-filter-section__title mb-1">詳細条件で絞り込む</h3>
+          <p class="shop-mobile-filter-section__text mb-0">紙・電子タバコや設備条件をまとめて調整できます。</p>
+        </div>
+      </div>
+
+      <div class="shop-filter-panel shop-filter-panel--mobile">
+        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, clear_path: clear_filters_path, submit_label: "この条件で表示" %>
+      </div>
+    </section>
+  </div>
+</div>

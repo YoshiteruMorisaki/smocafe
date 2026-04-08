@@ -1,0 +1,14 @@
+<% content_for :title, "Smocafe Admin | 店舗登録" %>
+
+<div class="container py-5">
+  <div class="mb-4">
+    <h1 class="h2 mb-1">新規店舗登録</h1>
+    <p class="text-secondary mb-0">掲載したい店舗情報を入力してください。</p>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <%= render "form", shop: @shop %>
+    </div>
+  </div>
+</div>

@@ -59,6 +59,26 @@
   </div>
 
   <div class="col-12">
+    <%= form.label :tag_ids, "タグ", class: "form-label" %>
+    <div class="border rounded-3 p-3 bg-light-subtle">
+      <% if @tags.any? %>
+        <div class="row g-2">
+          <%= form.collection_check_boxes :tag_ids, @tags, :id, :name do |builder| %>
+            <div class="col-sm-6 col-lg-4">
+              <label class="form-check border rounded-3 bg-white px-3 py-2 h-100 d-flex align-items-center gap-2">
+                <%= builder.check_box class: "form-check-input mt-0" %>
+                <span class="form-check-label"><%= builder.text %></span>
+              </label>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="mb-0 text-secondary">タグがまだ登録されていません。先にタグ管理から作成してください。</p>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-12">
     <%= form.label :image, class: "form-label" %>
     <%= form.file_field :image, class: "form-control", accept: "image/*" %>
     <div class="form-text">未設定の場合は No_image.jpg を表示します。</div>

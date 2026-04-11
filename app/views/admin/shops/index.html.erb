@@ -18,6 +18,7 @@
           <tr>
             <th>店舗名</th>
             <th>エリア</th>
+            <th>タグ</th>
             <th>電子</th>
             <th>紙</th>
             <th>最終更新</th>
@@ -32,6 +33,17 @@
                 <div class="small text-secondary"><%= shop.address %></div>
               </td>
               <td><%= shop.area %></td>
+              <td>
+                <% if shop.tags.any? %>
+                  <div class="d-flex flex-wrap gap-1">
+                    <% shop.tag_names.each do |tag_name| %>
+                      <span class="badge text-bg-light border"><%= tag_name %></span>
+                    <% end %>
+                  </div>
+                <% else %>
+                  <span class="text-secondary small">未設定</span>
+                <% end %>
+              </td>
               <td><%= shop.heated_tobacco_status_i18n %></td>
               <td><%= shop.papper_tobacco_status_i18n %></td>
               <td><%= shop.last_reported_at.present? ? l(shop.last_reported_at, format: :short) : "未登録" %></td>

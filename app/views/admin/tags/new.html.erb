@@ -1,0 +1,14 @@
+<% content_for :title, "Smocafe Admin | タグ登録" %>
+
+<div class="container py-5">
+  <div class="mb-4">
+    <h1 class="h2 mb-1">新規タグ登録</h1>
+    <p class="text-secondary mb-0">店舗情報に使うタグ名を登録してください。</p>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <%= render "form", tag: @tag %>
+    </div>
+  </div>
+</div>

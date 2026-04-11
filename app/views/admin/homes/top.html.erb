@@ -33,7 +33,10 @@
         <div class="card-body p-4">
           <div class="fs-2 text-success mb-3"><i class="fa-solid fa-tags"></i></div>
           <h2 class="h5">タグ管理</h2>
-          <p class="text-secondary mb-0">検索しやすいように、タグの追加やメンテナンスを行います。</p>
+          <p class="text-secondary">検索しやすいように、タグの追加やメンテナンスを行います。</p>
+          <%= link_to admin_tags_path, class: "btn btn-outline-success" do %>
+            一覧を見る
+          <% end %>
         </div>
       </div>
     </div>

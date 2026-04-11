@@ -2,6 +2,7 @@ ja:
   activerecord:
     models:
       shop: 店舗
+      tag: タグ
     attributes:
       shop:
         name: 店舗名
@@ -24,6 +25,8 @@ ja:
           unknown: 不明
           allowed: 可
           disallowed: 不可
+      tag:
+        name: タグ名
   time:
     formats:
       short: "%Y/%m/%d %H:%M"

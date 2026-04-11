@@ -18,13 +18,13 @@ class Public::ShopsController < Public::ApplicationController
   end
 
   def show
-    @shop = Shop.find(params[:id])
+    @shop = Shop.includes(:tags).find(params[:id])
   end
 
   private
 
   def filtered_shops
-    shops = Shop.recent_first
+    shops = Shop.including_tags.recent_first
     shops = shops.by_area(@selected_area) if @selected_area.present?
     shops = shops.where(papper_tobacco_status: :allowed) if @selected_filters.key?("papper_tobacco_allowed")
     shops = shops.where(heated_tobacco_status: :allowed) if @selected_filters.key?("heated_tobacco_allowed")

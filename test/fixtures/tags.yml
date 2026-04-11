@@ -1,0 +1,8 @@
+wifi:
+  name: Wi-Fi
+
+power:
+  name: 電源あり
+
+quiet:
+  name: 静か

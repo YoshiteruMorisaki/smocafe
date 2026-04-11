@@ -18,6 +18,20 @@ user.is_active = true
 user.save!
 
 shop_areas = Shop::AREAS
+tag_names = [
+	"テラス席あり",
+	"朝食あり",
+	"ディナー利用可",
+	"ワークスペースあり",
+	"長居しやすい",
+	"一人でも入りやすい",
+	"作業向き",
+	"落ち着いた雰囲気"
+]
+
+tags = tag_names.map do |tag_name|
+	Tag.find_or_create_by!(name: tag_name)
+end
 
 shop_areas.each_with_index do |area, area_index|
 	10.times do |shop_index|
@@ -49,7 +63,17 @@ shop_areas.each_with_index do |area, area_index|
 	end
 end
 
+Shop.find_each do |shop|
+	random = Random.new(shop.id)
+	assigned_tags = tags.sample(2, random: random)
+	assigned_tags.each do |tag|
+		ShopTag.find_or_create_by!(shop: shop, tag: tag)
+	end
+end
+
 puts "Seeded admin: admin@smocafe.local / password"
 puts "Seeded user: guest@smocafe.local / password"
 puts "Seeded shops: #{Shop.where(area: shop_areas).count} records"
 puts "Seeded shop images: #{[shop_image_paths.size, Shop.joins(:image_attachment).count].min} attachments"
+puts "Seeded tags: #{Tag.count} records"
+puts "Seeded shop-tag relations: #{ShopTag.count} records"

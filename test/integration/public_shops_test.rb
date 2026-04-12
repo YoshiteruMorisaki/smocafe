@@ -56,6 +56,16 @@ class PublicShopsTest < ActionDispatch::IntegrationTest
     assert_match "Wi-Fi あり", response.body
   end
 
+  test "guest can filter shops by tag ids" do
+    get shops_path(filters: { tag_ids: [tags(:quiet).id.to_s] })
+
+    assert_response :success
+    assert_match shops(:shinjuku_smoke).name, response.body
+    assert_no_match shops(:shibuya_lounge).name, response.body
+    assert_select "input[name='filters[tag_ids][]'][value='#{tags(:quiet).id}'][checked='checked']"
+    assert_match tags(:quiet).name, response.body
+  end
+
   test "guest shops index paginates filtered results" do
     create_public_pagination_shops(count: 15)
 

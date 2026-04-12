@@ -1,7 +1,7 @@
 <% content_for :title, "Smocafe | 店舗一覧" %>
 
 <% clear_filters_path = shops_path(@selected_area.present? ? { area: @selected_area } : {}) %>
-<% active_filter_count = @selected_filters.size + (@selected_area.present? ? 1 : 0) %>
+<% active_filter_count = @selected_filters.size + @selected_tag_ids.size + (@selected_area.present? ? 1 : 0) %>
 
 <div class="container py-5 shop-index-page">
   <section class="shop-index-mobile-tools d-lg-none" aria-label="スマートフォン向け絞り込みメニュー">
@@ -25,7 +25,7 @@
     <aside class="shop-index-sidebar d-none d-lg-block" aria-label="詳細条件で絞り込み">
       <div class="shop-filter-panel">
         <div class="shop-filter-panel__heading">絞り込む</div>
-        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, clear_path: clear_filters_path %>
+        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, selected_tag_ids: @selected_tag_ids, available_tags: @available_tags, clear_path: clear_filters_path %>
       </div>
     </aside>
 
@@ -157,7 +157,7 @@
       </div>
 
       <div class="shop-filter-panel shop-filter-panel--mobile">
-        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, clear_path: clear_filters_path, submit_label: "この条件で表示" %>
+        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, selected_tag_ids: @selected_tag_ids, available_tags: @available_tags, clear_path: clear_filters_path, submit_label: "この条件で表示" %>
       </div>
     </section>
   </div>

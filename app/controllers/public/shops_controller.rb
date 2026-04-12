@@ -11,8 +11,10 @@ class Public::ShopsController < Public::ApplicationController
   def index
     @areas = Shop::AREAS
     @filter_options = FILTER_OPTIONS
+    @available_tags = Tag.alphabetical
     @selected_area = params[:area].presence_in(@areas)
     @selected_filters = selected_filters
+    @selected_tag_ids = selected_tag_ids
     @total_shops_count = Shop.count
     @shops = paginate_collection(filtered_shops)
   end
@@ -30,10 +32,22 @@ class Public::ShopsController < Public::ApplicationController
     shops = shops.where(heated_tobacco_status: :allowed) if @selected_filters.key?("heated_tobacco_allowed")
     shops = shops.where(wifi_available: true) if @selected_filters.key?("wifi_available")
     shops = shops.where(power_available: true) if @selected_filters.key?("power_available")
+    shops = shops.joins(:tags).where(tags: { id: @selected_tag_ids }).distinct if @selected_tag_ids.any?
     shops
   end
 
   def selected_filters
-    params.fetch(:filters, {}).permit(*FILTER_OPTIONS.keys).to_h.select { |_, value| value == "1" }
+    params.fetch(:filters, {}).permit(*FILTER_OPTIONS.keys, tag_ids: [])
+      .slice(*FILTER_OPTIONS.keys)
+      .to_h
+      .select { |_, value| value == "1" }
+  end
+
+  def selected_tag_ids
+    params.fetch(:filters, {}).permit(tag_ids: [])[:tag_ids]
+      .to_a
+      .reject(&:blank?)
+      .map(&:to_i)
+      .uniq
   end
 end

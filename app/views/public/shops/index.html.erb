@@ -80,7 +80,11 @@
                   <span class="badge text-bg-success-subtle text-success-emphasis">電子: <%= shop.heated_tobacco_status_i18n %></span>
                   <span class="badge text-bg-warning-subtle text-warning-emphasis">紙: <%= shop.papper_tobacco_status_i18n %></span>
                   <span class="badge text-bg-info-subtle text-info-emphasis">Wi-Fi: <%= shop.wifi_available? ? "あり" : "なし" %></span>
-                  <span class="badge text-bg-secondary">電源: <%= shop.power_available? ? "あり" : "なし" %></span>
+                  <% if shop.power_available? %>
+                    <span class="badge text-bg-success"><i class="fa-solid fa-bolt me-1"></i>電源あり</span>
+                  <% else %>
+                    <span class="badge text-bg-light border text-muted">電源なし</span>
+                  <% end %>
                   <% shop.tag_names.each do |tag_name| %>
                     <span class="badge rounded-pill text-bg-light border"><%= tag_name %></span>
                   <% end %>

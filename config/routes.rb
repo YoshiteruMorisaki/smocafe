@@ -26,7 +26,7 @@
     # カフェ一覧・詳細
     # 各店舗に対してレビュー投稿とブックマーク登録をネストしています。
     resources :shops, only: [:index, :show] do
-      resources :reports, only: [:new, :create]
+      resources :reports, only: [:index, :new, :create]
       resource :bookmark, only: [:create, :destroy]
     end
 

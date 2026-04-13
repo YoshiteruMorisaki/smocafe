@@ -1,0 +1,43 @@
+class Public::ReportsController < Public::ApplicationController
+  before_action :set_shop
+
+  def index
+    @reports = paginate_collection(
+      @shop.reports.includes(:user).order(visited_on: :desc, created_at: :desc, id: :desc)
+    )
+  end
+
+  def new
+    @report = @shop.reports.build(default_report_attributes)
+  end
+
+  def create
+    @report = @shop.reports.build(report_params)
+    @report.user = current_user
+
+    if @report.save
+      redirect_to shop_path(@shop), notice: "投稿を保存しました。"
+    else
+      flash.now[:alert] = "投稿に失敗しました。入力内容をご確認ください。"
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def set_shop
+    @shop = Shop.find(params[:shop_id])
+  end
+
+  def report_params
+    params.require(:report).permit(:visited_on, :heated_tobacco_status, :papper_tobacco_status, :comment)
+  end
+
+  def default_report_attributes
+    {
+      visited_on: Date.current,
+      heated_tobacco_status: @shop.heated_tobacco_status,
+      papper_tobacco_status: @shop.papper_tobacco_status
+    }
+  end
+end

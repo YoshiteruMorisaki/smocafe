@@ -4,6 +4,7 @@ class Shop < ApplicationRecord
   has_one_attached :image
   has_many :shop_tags, dependent: :destroy
   has_many :tags, through: :shop_tags
+  has_many :reports, dependent: :destroy
 
   enum :heated_tobacco_status, { unknown: 0, allowed: 1, disallowed: 2 }, prefix: true
   enum :papper_tobacco_status, { unknown: 0, allowed: 1, disallowed: 2 }, prefix: true

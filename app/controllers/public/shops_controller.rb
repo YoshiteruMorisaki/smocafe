@@ -21,6 +21,9 @@ class Public::ShopsController < Public::ApplicationController
 
   def show
     @shop = Shop.includes(:tags).find(params[:id])
+    @latest_reports = @shop.reports.includes(:user)
+      .order(visited_on: :desc, created_at: :desc, id: :desc)
+      .limit(3)
   end
 
   private

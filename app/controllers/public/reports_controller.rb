@@ -9,6 +9,7 @@ class Public::ReportsController < Public::ApplicationController
 
   def new
     @report = @shop.reports.build(default_report_attributes)
+    @tags = Tag.alphabetical
   end
 
   def create
@@ -16,8 +17,10 @@ class Public::ReportsController < Public::ApplicationController
     @report.user = current_user
 
     if @report.save
+      add_tags_to_shop
       redirect_to shop_path(@shop), notice: "投稿を保存しました。"
     else
+      @tags = Tag.alphabetical
       flash.now[:alert] = "投稿に失敗しました。入力内容をご確認ください。"
       render :new, status: :unprocessable_entity
     end
@@ -31,6 +34,13 @@ class Public::ReportsController < Public::ApplicationController
 
   def report_params
     params.require(:report).permit(:visited_on, :heated_tobacco_status, :papper_tobacco_status, :comment)
+  end
+
+  def add_tags_to_shop
+    tag_ids = Array(params.dig(:report, :tag_ids)).map(&:to_i).uniq
+    Tag.where(id: tag_ids).each do |tag|
+      ShopTag.find_or_create_by(shop: @shop, tag: tag)
+    end
   end
 
   def default_report_attributes

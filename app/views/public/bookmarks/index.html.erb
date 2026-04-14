@@ -1,0 +1,65 @@
+<% content_for :title, "Smocafe | お気に入り店舗" %>
+
+<div class="container py-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h2 mb-1">お気に入り店舗</h1>
+      <p class="text-secondary mb-0">登録した店舗を一覧で確認できます。</p>
+    </div>
+    <%= link_to shops_path, class: "btn btn-outline-success" do %>
+      <i class="fa-solid fa-magnifying-glass me-1"></i>店舗を探す
+    <% end %>
+  </div>
+
+  <% if @shops.any? %>
+    <div class="shop-results">
+      <% @shops.each do |shop| %>
+        <article class="shop-result-card">
+          <div class="shop-result-card__media">
+            <%= image_tag shop.display_image, class: "shop-result-card__image", alt: shop.name %>
+          </div>
+
+          <div class="shop-result-card__body">
+            <div class="shop-result-card__heading">
+              <div>
+                <p class="shop-result-card__area"><%= shop.area %></p>
+                <div class="shop-result-card__name-row">
+                  <h2 class="shop-result-card__name"><%= shop.name %></h2>
+                  <%= render "public/shops/bookmark_button", shop: shop, bookmarked: true %>
+                </div>
+                <p class="shop-result-card__address"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
+              </div>
+              <span class="shop-result-card__updated"><%= l(shop.last_reported_at, format: :short) if shop.last_reported_at.present? %></span>
+            </div>
+
+            <div class="shop-result-card__badges">
+              <span class="badge text-bg-success-subtle text-success-emphasis">電子: <%= shop.heated_tobacco_status_i18n %></span>
+              <span class="badge text-bg-warning-subtle text-warning-emphasis">紙: <%= shop.papper_tobacco_status_i18n %></span>
+              <span class="badge text-bg-info-subtle text-info-emphasis">Wi-Fi: <%= shop.wifi_available? ? "あり" : "なし" %></span>
+              <% if shop.power_available? %>
+                <span class="badge text-bg-success"><i class="fa-solid fa-bolt me-1"></i>電源あり</span>
+              <% else %>
+                <span class="badge text-bg-light border text-muted">電源なし</span>
+              <% end %>
+              <% shop.tag_names.each do |tag_name| %>
+                <span class="badge rounded-pill text-bg-light border"><%= tag_name %></span>
+              <% end %>
+            </div>
+
+            <p class="shop-result-card__description"><%= truncate(shop.description.to_s, length: 130) %></p>
+
+            <%= link_to shop_path(shop), class: "btn btn-outline-success shop-result-card__link" do %>
+              詳細を見る
+            <% end %>
+          </div>
+        </article>
+      <% end %>
+    </div>
+
+    <%= render "shared/pagination", collection: @shops %>
+  <% else %>
+    <div class="alert alert-light border shadow-sm mb-0" role="status">
+      まだお気に入り登録された店舗はありません。
+    </div>
+  <% end %>
+</div>

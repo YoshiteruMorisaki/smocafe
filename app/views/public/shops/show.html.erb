@@ -12,7 +12,10 @@
       <div class="d-flex flex-column flex-lg-row justify-content-between gap-4 mb-4">
         <div>
           <p class="text-success fw-semibold mb-1"><%= @shop.area %></p>
-          <h1 class="h2 mb-2"><%= @shop.name %></h1>
+          <div class="shop-detail-title-row">
+            <h1 class="h2 mb-0"><%= @shop.name %></h1>
+            <%= render "bookmark_button", shop: @shop, bookmarked: @bookmarked %>
+          </div>
           <p class="text-secondary mb-0"><i class="fa-solid fa-location-dot me-2"></i><%= @shop.address %></p>
         </div>
         <div class="text-secondary small">

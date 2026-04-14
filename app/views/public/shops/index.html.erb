@@ -70,7 +70,10 @@
                 <div class="shop-result-card__heading">
                   <div>
                     <p class="shop-result-card__area"><%= shop.area %></p>
-                    <h2 class="shop-result-card__name"><%= shop.name %></h2>
+                    <div class="shop-result-card__name-row">
+                      <h2 class="shop-result-card__name"><%= shop.name %></h2>
+                      <%= render "bookmark_button", shop: shop, bookmarked: @bookmarked_shop_ids.include?(shop.id) %>
+                    </div>
                     <p class="shop-result-card__address"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
                   </div>
                   <span class="shop-result-card__updated"><%= l(shop.last_reported_at, format: :short) if shop.last_reported_at.present? %></span>

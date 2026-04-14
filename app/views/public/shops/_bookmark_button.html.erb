@@ -1,0 +1,21 @@
+<% if authenticated_user? %>
+  <% if bookmarked %>
+    <%= form_with url: shop_bookmark_path(shop), method: :delete, local: true, data: { turbo: false }, class: "bookmark-heart-form" do %>
+      <%= button_tag type: "submit", class: "bookmark-heart-btn is-active p-0 border-0 bg-transparent shadow-none", data: { bookmarked: true }, aria: { label: "#{shop.name}のお気に入りを解除", pressed: true } do %>
+        <i class="bi bi-heart-fill bookmark-heart-icon"></i>
+      <% end %>
+    <% end %>
+  <% else %>
+    <%= form_with url: shop_bookmark_path(shop), method: :post, local: true, data: { turbo: false }, class: "bookmark-heart-form" do %>
+      <%= button_tag type: "submit", class: "bookmark-heart-btn p-0 border-0 bg-transparent shadow-none", data: { bookmarked: false }, aria: { label: "#{shop.name}をお気に入り登録", pressed: false } do %>
+        <i class="bi bi-heart bookmark-heart-icon"></i>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= form_with url: users_sign_in_path, method: :get, local: true, class: "bookmark-heart-form" do %>
+    <%= button_tag type: "submit", class: "bookmark-heart-btn p-0 border-0 bg-transparent shadow-none", data: { bookmarked: false }, aria: { label: "ログインして#{shop.name}をお気に入り登録", pressed: false } do %>
+      <i class="bi bi-heart bookmark-heart-icon"></i>
+    <% end %>
+  <% end %>
+<% end %>

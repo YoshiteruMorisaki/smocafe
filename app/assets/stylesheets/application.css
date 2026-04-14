@@ -593,6 +593,91 @@
 	margin-bottom: 0.45rem;
 }
 
+.shop-result-card__name-row {
+	align-items: center;
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 0.65rem;
+	margin-bottom: 0.45rem;
+	max-width: 100%;
+}
+
+.bookmark-heart-form {
+	display: inline-flex;
+	line-height: 1;
+	margin: 0;
+}
+
+.bookmark-heart-form .bookmark-heart-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.6rem;
+	height: 1.6rem;
+	padding: 0;
+	margin: 0;
+	border: none !important;
+	outline: none !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	border-radius: 50%;
+	line-height: 1;
+	color: #8f8f8f !important;
+	cursor: pointer;
+	appearance: none;
+	-webkit-appearance: none;
+	-webkit-tap-highlight-color: transparent;
+	transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.bookmark-heart-form .bookmark-heart-btn:hover,
+.bookmark-heart-form .bookmark-heart-btn:focus,
+.bookmark-heart-form .bookmark-heart-btn:focus-visible,
+.bookmark-heart-form .bookmark-heart-btn:active {
+	border: none !important;
+	outline: none !important;
+	background: transparent !important;
+	box-shadow: none !important;
+	color: #ff6ea8 !important;
+	transform: translateY(-1px);
+}
+
+.bookmark-heart-form .bookmark-heart-btn.is-active,
+.bookmark-heart-form .bookmark-heart-btn[aria-pressed="true"],
+.bookmark-heart-form .bookmark-heart-btn[data-bookmarked="true"] {
+	color: #ff5c9b !important;
+}
+
+.bookmark-heart-form .bookmark-heart-btn::-moz-focus-inner {
+	border: 0;
+	padding: 0;
+}
+
+.bookmark-heart-icon {
+	color: inherit !important;
+	font-size: 0.98rem;
+	line-height: 1;
+	pointer-events: none;
+}
+
+.shop-result-card__name-row .shop-result-card__name {
+	margin-bottom: 0;
+	white-space: normal;
+}
+
+.shop-detail-title-row {
+	align-items: center;
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 0.7rem;
+	margin-bottom: 0.5rem;
+	max-width: 100%;
+}
+
+.shop-detail-title-row .h2 {
+	margin-bottom: 0;
+}
+
 .shop-result-card__address {
 	color: #6d6258;
 	margin-bottom: 0;
@@ -856,6 +941,10 @@
 		font-size: 1.35rem;
 	}
 
+	.shop-result-card__name-row {
+		display: flex;
+	}
+
 	.shop-result-card__detail-row {
 		grid-template-columns: 1fr;
 		gap: 0.35rem;
@@ -935,6 +1024,16 @@
 	.shop-result-card__name {
 		font-size: 1.18rem;
 		margin-bottom: 0.35rem;
+	}
+
+	.bookmark-heart-btn,
+	.bookmark-heart-link {
+		height: 1.9rem;
+		width: 1.9rem;
+	}
+
+	.shop-detail-title-row {
+		gap: 0.6rem;
 	}
 
 	.shop-result-card__address,

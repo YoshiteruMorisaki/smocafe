@@ -17,10 +17,16 @@ class Public::ShopsController < Public::ApplicationController
     @selected_tag_ids = selected_tag_ids
     @total_shops_count = Shop.count
     @shops = paginate_collection(filtered_shops)
+    @bookmarked_shop_ids = if authenticated_user?
+                             current_user.bookmarks.where(shop_id: @shops.map(&:id)).pluck(:shop_id)
+                           else
+                             []
+                           end
   end
 
   def show
     @shop = Shop.includes(:tags).find(params[:id])
+    @bookmarked = authenticated_user? && current_user.bookmarked?(@shop)
     @latest_reports = @shop.reports.includes(:user)
       .order(visited_on: :desc, created_at: :desc, id: :desc)
       .limit(3)

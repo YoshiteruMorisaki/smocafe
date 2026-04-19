@@ -1,0 +1,30 @@
+<% content_for :title, "Smocafe | ブックマーク一覧" %>
+
+<div class="container py-5">
+  <h1 class="h3 mb-4">ブックマーク一覧</h1>
+
+  <% if @shops.any? %>
+    <div class="row g-4">
+      <% @shops.each do |shop| %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <%= image_tag shop.display_image, class: "card-img-top", style: "height: 180px; object-fit: cover;", alt: shop.name %>
+            <div class="card-body">
+              <p class="text-success fw-semibold small mb-1"><%= shop.area %></p>
+              <h2 class="h6 mb-2"><%= shop.name %></h2>
+              <p class="small text-secondary mb-3"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <%= link_to "詳細を見る", shop_path(shop), class: "btn btn-sm btn-outline-success" %>
+                <%= render "shared/bookmark_button", shop: shop %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-light border shadow-sm">
+      ブックマークした店舗はまだありません。
+    </div>
+  <% end %>
+</div>

@@ -15,8 +15,11 @@
           <h1 class="h2 mb-2"><%= @shop.name %></h1>
           <p class="text-secondary mb-0"><i class="fa-solid fa-location-dot me-2"></i><%= @shop.address %></p>
         </div>
-        <div class="text-secondary small">
-          最終更新: <%= @shop.last_reported_at.present? ? l(@shop.last_reported_at, format: :long) : "未登録" %>
+        <div class="d-flex align-items-start gap-3">
+          <%= render "shared/bookmark_button", shop: @shop %>
+          <div class="text-secondary small">
+            最終更新: <%= @shop.last_reported_at.present? ? l(@shop.last_reported_at, format: :long) : "未登録" %>
+          </div>
         </div>
       </div>
 

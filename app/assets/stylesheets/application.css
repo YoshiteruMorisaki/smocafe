@@ -962,3 +962,60 @@
 		grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
 	}
 }
+
+/* ==============================
+   ブックマークボタン (Google スター風)
+   ============================== */
+
+/* button_to の form をインライン化 */
+.btn-bookmark-form {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+/* ボタン本体 */
+.btn-bookmark {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  margin: 0;
+  background-color: transparent !important;
+  cursor: pointer;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  color: #9e9e9e;
+  flex-shrink: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.btn-bookmark:hover {
+  color: #757575;
+  background-color: rgba(117, 117, 117, 0.12);
+  transform: scale(1.2);
+}
+
+.btn-bookmark i {
+  font-size: 1.25rem;
+  pointer-events: none;
+}
+
+/* 登録済み: 灰色 */
+.btn-bookmark--active {
+  color: #555555;
+}
+
+.btn-bookmark--active:hover {
+  color: #333333;
+  background-color: rgba(0, 0, 0, 0.08);
+}

@@ -1,0 +1,24 @@
+<%# 使い方: render "shared/bookmark_button", shop: shop, bookmarked: true/false %>
+<%# bookmarked を省略した場合は current_user から判定（単一shop表示時に使用） %>
+<% bookmarked = local_assigns.key?(:bookmarked) ? bookmarked : (authenticated_user? && current_user.bookmarks.exists?(shop: shop)) %>
+<% if authenticated_user? %>
+  <span id="<%= dom_id(shop, :bookmark) %>">
+    <% if bookmarked %>
+      <%= button_to shop_bookmark_path(shop), method: :delete,
+            data: { turbo_stream: true },
+            form_class: "btn-bookmark-form",
+            class: "btn-bookmark btn-bookmark--active",
+            aria: { label: "ブックマーク解除" } do %>
+        <i class="fa-solid fa-star"></i>
+      <% end %>
+    <% else %>
+      <%= button_to shop_bookmark_path(shop), method: :post,
+            data: { turbo_stream: true },
+            form_class: "btn-bookmark-form",
+            class: "btn-bookmark",
+            aria: { label: "ブックマーク追加" } do %>
+        <i class="fa-regular fa-star"></i>
+      <% end %>
+    <% end %>
+  </span>
+<% end %>

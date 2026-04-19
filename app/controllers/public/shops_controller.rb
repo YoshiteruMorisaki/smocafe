@@ -17,6 +17,7 @@ class Public::ShopsController < Public::ApplicationController
     @selected_tag_ids = selected_tag_ids
     @total_shops_count = Shop.count
     @shops = paginate_collection(filtered_shops)
+    @bookmarked_shop_ids = authenticated_user? ? current_user.bookmarks.where(shop_id: @shops.map(&:id)).pluck(:shop_id).to_set : Set.new
   end
 
   def show

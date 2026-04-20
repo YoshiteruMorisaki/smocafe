@@ -30,7 +30,8 @@ class Shop < ApplicationRecord
   end
 
   def display_image
-    image.attached? ? image : "no_image.jpg"
+    # 画像未添付時は public/ の静的ファイルを参照（アセットパイプライン不要）
+    image.attached? ? image : "/no_image.jpg"
   end
 
   def tag_names

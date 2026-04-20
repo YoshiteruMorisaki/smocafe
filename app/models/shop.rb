@@ -30,7 +30,7 @@ class Shop < ApplicationRecord
   end
 
   def display_image
-    image.attached? ? image : "No_image.jpg"
+    image.attached? ? image : "no_image.jpg"
   end
 
   def tag_names

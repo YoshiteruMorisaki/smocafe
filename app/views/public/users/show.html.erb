@@ -6,40 +6,36 @@
       <h1 class="h2 mb-1">マイページ</h1>
       <p class="text-secondary mb-0">登録情報とアカウント状態を確認できます。</p>
     </div>
-    <%= link_to users_information_edit_path, class: "btn btn-outline-success" do %>
-      <i class="fa-regular fa-pen-to-square me-1"></i>会員情報を編集
-    <% end %>
   </div>
 
   <div class="row g-4">
-    <div class="col-lg-7">
+    <%# ── プロフィール ── %>
+    <div class="col-lg-8">
       <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-          <h2 class="h5 mb-3">登録情報</h2>
-          <dl class="row mb-0">
-            <dt class="col-sm-4 text-secondary">表示名</dt>
-            <dd class="col-sm-8"><%= @user.name %></dd>
-
-            <dt class="col-sm-4 text-secondary">メールアドレス</dt>
-            <dd class="col-sm-8"><%= @user.email_address %></dd>
-
-            <dt class="col-sm-4 text-secondary">ステータス</dt>
-            <dd class="col-sm-8">
+          <div class="d-flex align-items-center gap-4">
+            <%= image_tag(@user.display_profile_image || "/no_profile_image.jpg",
+                  class: "rounded-circle object-fit-cover",
+                  style: "width: 80px; height: 80px;",
+                  alt: @user.name) %>
+            <div>
+              <h2 class="h5 mb-1"><%= @user.name %></h2>
+              <p class="text-secondary small mb-0"><%= @user.email_address %></p>
               <% if @user.is_active? %>
-                <span class="badge text-bg-success">有効</span>
+                <span class="badge text-bg-success mt-1">有効</span>
               <% else %>
-                <span class="badge text-bg-secondary">退会済み</span>
+                <span class="badge text-bg-secondary mt-1">退会済み</span>
               <% end %>
-            </dd>
-          </dl>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="col-lg-5">
+    <%# ── アカウント操作 ── %>
+    <div class="col-lg-4">
       <div class="card border-0 shadow-sm h-100">
         <div class="card-body p-4">
-          <h2 class="h5 mb-3">アカウント操作</h2>
           <div class="d-grid gap-2">
             <%= link_to users_information_edit_path, class: "btn btn-success" do %>
               <i class="fa-regular fa-user me-1"></i>プロフィールを更新する
@@ -48,6 +44,85 @@
               <i class="fa-regular fa-circle-xmark me-1"></i>退会手続きへ進む
             <% end %>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <%# ── 最近の投稿 ── %>
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h5 mb-3">最近の投稿</h2>
+
+          <% if @recent_reports.any? %>
+            <div class="d-grid gap-3">
+              <% @recent_reports.each do |report| %>
+                <article class="border rounded-3 p-3 bg-light">
+                  <div class="d-flex flex-column flex-md-row justify-content-between gap-1 mb-2">
+                    <span class="fw-semibold"><%= report.shop.name %></span>
+                    <span class="small text-secondary"><i class="fa-regular fa-calendar me-1"></i><%= l(report.visited_on, format: :short) %></span>
+                  </div>
+                  <p class="small mb-2">
+                    電子: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
+                    <span class="mx-1">/</span>
+                    紙: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
+                  </p>
+                  <p class="small text-secondary mb-2 text-truncate"><%= report.comment %></p>
+                  <div class="d-flex gap-2">
+                    <%= link_to shop_path(report.shop), class: "btn btn-sm btn-outline-secondary" do %>
+                      <i class="fa-solid fa-store me-1"></i>店舗詳細
+                    <% end %>
+                    <%= link_to edit_report_path(report), class: "btn btn-sm btn-outline-success" do %>
+                      <i class="fa-regular fa-pen-to-square me-1"></i>編集
+                    <% end %>
+                  </div>
+                </article>
+              <% end %>
+            </div>
+            <div class="mt-3 text-end">
+              <%= link_to users_my_reports_path, class: "btn btn-link text-decoration-none px-0" do %>
+                自分の投稿をすべて見る <i class="fa-solid fa-angle-right ms-1"></i>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-secondary small mb-0">まだ投稿はありません。</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <%# ── ブックマーク ── %>
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <h2 class="h5 mb-3">ブックマーク</h2>
+
+          <% if @recent_bookmarks.any? %>
+            <div class="row g-3">
+              <% @recent_bookmarks.each do |shop| %>
+                <div class="col-md-4">
+                  <div class="card h-100 border-0 shadow-sm">
+                    <%= image_tag shop.display_image,
+                          class: "card-img-top object-fit-cover",
+                          style: "height: 140px;",
+                          alt: shop.name %>
+                    <div class="card-body p-3">
+                      <p class="text-success fw-semibold small mb-1"><%= shop.area %></p>
+                      <h3 class="h6 mb-2"><%= shop.name %></h3>
+                      <%= link_to "詳細を見る", shop_path(shop), class: "btn btn-sm btn-outline-success w-100" %>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+            <div class="mt-3 text-end">
+              <%= link_to bookmarks_path, class: "btn btn-link text-decoration-none px-0" do %>
+                ブックマークをすべて見る <i class="fa-solid fa-angle-right ms-1"></i>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-secondary small mb-0">ブックマークした店舗はまだありません。</p>
+          <% end %>
         </div>
       </div>
     </div>

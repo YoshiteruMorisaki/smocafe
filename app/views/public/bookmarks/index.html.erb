@@ -1,6 +1,12 @@
 <% content_for :title, "Smocafe | ブックマーク一覧" %>
 
 <div class="container py-5">
+  <div class="mb-4">
+    <%= link_to users_my_page_path, class: "btn btn-link px-0 text-decoration-none" do %>
+      <i class="fa-solid fa-arrow-left me-1"></i>マイページへ戻る
+    <% end %>
+  </div>
+
   <h1 class="h3 mb-4">ブックマーク一覧</h1>
 
   <% if @shops.any? %>

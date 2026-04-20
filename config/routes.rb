@@ -18,6 +18,7 @@
 
     # マイページ / 会員情報編集 / 退会
     get "users/my_page", to: "users#show"
+    get "users/my_reports", to: "users#my_reports"
     get "users/information/edit", to: "users#edit"
     patch "users", to: "users#update"
     get "users/unsubscribe", to: "users#unsubscribe"

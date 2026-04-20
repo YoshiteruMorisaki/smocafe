@@ -6,8 +6,12 @@ class Public::SessionsController < Public::ApplicationController
   end
 
   def create
+    # strip.downcase は User モデルの normalizes でも行われるが、
+    # ここでは find_by 前に正規化して大文字小文字の違いによる検索ミスを防ぐ
     user = User.find_by(email_address: params[:email_address].to_s.strip.downcase)
 
+    # user& で nil チェック。authenticate は has_secure_password が提供するメソッドで
+    # BCrypt でハッシュ化されたパスワードと照合する
     if user&.authenticate(params[:password])
       if user.is_active?
         start_new_session_for(user)

@@ -21,6 +21,7 @@ class Public::UsersController < Public::ApplicationController
   end
 
   def my_reports
+    # includes(:shop) で投稿一覧の店舗名表示 N+1 を防止
     @reports = paginate_collection(
       current_user.reports.includes(:shop).order(visited_on: :desc, created_at: :desc, id: :desc)
     )

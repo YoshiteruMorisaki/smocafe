@@ -2,8 +2,12 @@ module Public::Authentication
   extend ActiveSupport::Concern
 
   included do
+    # 全アクション実行前にセッション復元を試みる
     before_action :resume_session
+    # セッションがなければログインページへリダイレクト
+    # allow_unauthenticated_access を宣言したアクションはスキップされる
     before_action :require_authentication
+    # ビュー・他のコントローラから authenticated_user? / current_user を呼び出せるようにする
     helper_method :authenticated_user?, :current_user
   end
 
@@ -42,6 +46,8 @@ module Public::Authentication
   end
 
   def after_authentication_url
+    # ログイン前にアクセスしていた URL があればそちらへ、なければマイページへ
+    # delete で取り出しと同時に削除（二重リダイレクト防止）
     session.delete(:return_to_after_authenticating) || users_my_page_path
   end
 
@@ -53,6 +59,7 @@ module Public::Authentication
   end
 
   def terminate_session
+    # DB のセッションレコードを削除し、Current.session と Cookie の両方をクリア
     Current.session&.destroy
     Current.session = nil
     cookies.delete(:session_id)

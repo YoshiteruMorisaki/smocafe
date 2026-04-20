@@ -11,7 +11,7 @@ class ShopTest < ActiveSupport::TestCase
   test "display_image falls back to default image when no image is attached" do
     shop = shops(:shibuya_lounge)
 
-    assert_equal "no_image.jpg", shop.display_image
+    assert_equal "/no_image.jpg", shop.display_image
   end
 
   test "area must be one of the fixed choices" do

@@ -29,6 +29,23 @@
     <% end %>
   </section>
 
+  <% if available_tags.any? %>
+    <section class="shop-filter-group">
+      <h2 class="shop-filter-group__title">タグで絞り込む</h2>
+      <div class="shop-filter-tags">
+        <% available_tags.each do |tag| %>
+          <label class="shop-filter-option shop-filter-option--tag">
+            <span class="shop-filter-option__label"><%= tag.name %></span>
+            <span class="shop-filter-option__check">
+              <%= check_box_tag "filters[tag_ids][]", tag.id, selected_tag_ids.include?(tag.id), class: "shop-filter-option__input" %>
+              <span class="shop-filter-option__indicator"></span>
+            </span>
+          </label>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+
   <div class="shop-filter-form__actions">
     <%= submit_tag local_assigns.fetch(:submit_label, "絞り込む"), class: "btn shop-filter-form__submit" %>
     <%= link_to "条件をクリア", clear_path, class: "shop-filter-form__clear" %>

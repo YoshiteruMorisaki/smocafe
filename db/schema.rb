@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_04_08_123000) do
+ActiveRecord::Schema[8.0].define(version: 2026_04_19_093223) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -47,6 +47,31 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_123000) do
     t.index ["email_address"], name: "index_admins_on_email_address", unique: true
   end
 
+  create_table "bookmarks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "shop_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shop_id"], name: "index_bookmarks_on_shop_id"
+    t.index ["user_id", "shop_id"], name: "index_bookmarks_on_user_id_and_shop_id", unique: true
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "shop_id", null: false
+    t.date "visited_on", null: false
+    t.integer "heated_tobacco_status", default: 0, null: false
+    t.integer "papper_tobacco_status", default: 0, null: false
+    t.text "comment", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_reports_on_created_at"
+    t.index ["shop_id", "visited_on"], name: "index_reports_on_shop_id_and_visited_on"
+    t.index ["shop_id"], name: "index_reports_on_shop_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "admin_id"
@@ -56,6 +81,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_123000) do
     t.datetime "updated_at", null: false
     t.index ["admin_id"], name: "index_sessions_on_admin_id"
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "shop_tags", force: :cascade do |t|
+    t.bigint "shop_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["shop_id", "tag_id"], name: "index_shop_tags_on_shop_id_and_tag_id", unique: true
+    t.index ["shop_id"], name: "index_shop_tags_on_shop_id"
+    t.index ["tag_id"], name: "index_shop_tags_on_tag_id"
   end
 
   create_table "shops", force: :cascade do |t|
@@ -76,6 +111,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_123000) do
     t.index ["last_reported_at"], name: "index_shops_on_last_reported_at"
   end
 
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
     t.string "email_address", null: false
@@ -88,6 +130,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_08_123000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "bookmarks", "shops"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "reports", "shops"
+  add_foreign_key "reports", "users"
   add_foreign_key "sessions", "admins"
   add_foreign_key "sessions", "users"
+  add_foreign_key "shop_tags", "shops"
+  add_foreign_key "shop_tags", "tags"
 end

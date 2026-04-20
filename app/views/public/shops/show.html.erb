@@ -1,8 +1,9 @@
 <% content_for :title, "Smocafe | #{@shop.name}" %>
 
 <div class="container py-5">
+  <% back_url = request.referer&.start_with?(shops_url.split("?").first) && URI.parse(request.referer).path.split("?").first == URI.parse(shops_url).path ? request.referer : shops_path %>
   <div class="mb-4">
-    <%= link_to shops_path, class: "btn btn-link px-0 text-decoration-none" do %>
+    <%= link_to back_url, class: "btn btn-link px-0 text-decoration-none" do %>
       <i class="fa-solid fa-arrow-left me-1"></i>店舗一覧へ戻る
     <% end %>
   </div>
@@ -15,8 +16,11 @@
           <h1 class="h2 mb-2"><%= @shop.name %></h1>
           <p class="text-secondary mb-0"><i class="fa-solid fa-location-dot me-2"></i><%= @shop.address %></p>
         </div>
-        <div class="text-secondary small">
-          最終更新: <%= @shop.last_reported_at.present? ? l(@shop.last_reported_at, format: :long) : "未登録" %>
+        <div class="d-flex align-items-start gap-3">
+          <%= render "shared/bookmark_button", shop: @shop %>
+          <div class="text-secondary small">
+            最終更新: <%= @shop.last_reported_at.present? ? l(@shop.last_reported_at, format: :long) : "未登録" %>
+          </div>
         </div>
       </div>
 
@@ -31,9 +35,28 @@
             <p class="text-secondary mb-0"><%= simple_format(@shop.description.presence || "店舗説明はまだ登録されていません。") %></p>
           </div>
 
+          <div class="mb-4">
+            <h2 class="h5 mb-3">タグ</h2>
+            <% if @shop.tags.any? %>
+              <div class="d-flex flex-wrap gap-2">
+                <% @shop.tag_names.each do |tag_name| %>
+                  <span class="badge rounded-pill text-bg-light border px-3 py-2"><%= tag_name %></span>
+                <% end %>
+              </div>
+            <% else %>
+              <p class="text-secondary mb-0">タグはまだ登録されていません。</p>
+            <% end %>
+          </div>
+
           <div>
             <h2 class="h5 mb-3">基本情報</h2>
             <dl class="row mb-0">
+              <dt class="col-sm-4 text-secondary">電子タバコ</dt>
+              <dd class="col-sm-8"><%= @shop.heated_tobacco_status_i18n %></dd>
+
+              <dt class="col-sm-4 text-secondary">紙タバコ</dt>
+              <dd class="col-sm-8"><%= @shop.papper_tobacco_status_i18n %></dd>
+
               <dt class="col-sm-4 text-secondary">営業時間</dt>
               <dd class="col-sm-8"><%= @shop.business_hours.presence || "未登録" %></dd>
 
@@ -52,17 +75,74 @@
         <div class="col-lg-5">
           <div class="card bg-body-tertiary border-0 h-100">
             <div class="card-body p-4">
-              <h2 class="h5 mb-3">喫煙情報</h2>
-              <div class="d-grid gap-3">
-                <div class="rounded-3 bg-white border p-3">
-                  <div class="small text-secondary mb-1">電子タバコ</div>
-                  <div class="fw-semibold"><%= @shop.heated_tobacco_status_i18n %></div>
+              <h2 class="h5 mb-3">来店コメント</h2>
+              <% if @latest_reports.any? %>
+                <div class="d-grid gap-3">
+                  <% @latest_reports.each do |report| %>
+                    <article class="rounded-3 bg-white border p-3">
+                      <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                        <div class="small text-secondary">
+                          <i class="fa-regular fa-calendar me-1"></i><%= l(report.visited_on, format: :short) %>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                          <%= image_tag(report.user.display_profile_image || "/no_profile_image.jpg",
+                              class: "rounded-circle",
+                              style: "width: 24px; height: 24px; object-fit: cover;",
+                              alt: report.user.name) %>
+                          <span class="small text-secondary"><%= report.user.name %></span>
+                        </div>
+                      </div>
+                      <p class="small mb-2">
+                        電子タバコ: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
+                        <span class="mx-1">/</span>
+                        紙タバコ: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
+                      </p>
+                      <p class="mb-0 text-secondary"><%= simple_format(report.comment.truncate(120), {}, wrapper_tag: "span") %></p>
+                    </article>
+                  <% end %>
                 </div>
-                <div class="rounded-3 bg-white border p-3">
-                  <div class="small text-secondary mb-1">紙タバコ</div>
-                  <div class="fw-semibold"><%= @shop.papper_tobacco_status_i18n %></div>
+                <div class="mt-3 text-end">
+                  <%= link_to shop_reports_path(@shop), class: "btn btn-link text-decoration-none px-0" do %>
+                    この店舗の投稿をもっと見る <i class="fa-solid fa-angle-right ms-1"></i>
+                  <% end %>
                 </div>
+              <% else %>
+                <p class="text-secondary mb-0">まだ投稿がありません。</p>
+              <% end %>
+
+              <hr class="my-4">
+
+              <div class="rounded-3 bg-white border p-3 mb-4">
+                <h2 class="h6 text-secondary mb-3">ブックマークしている人 <span class="fw-semibold text-body"><%= @bookmarked_users.size %>人</span></h2>
+                <% if @bookmarked_users.any? %>
+                  <div class="d-flex flex-wrap gap-1">
+                    <% @bookmarked_users.each do |user| %>
+                      <%= image_tag(user.display_profile_image || "/no_profile_image.jpg",
+                          class: "rounded-circle border",
+                          style: "width: 36px; height: 36px; object-fit: cover;",
+                          alt: user.name,
+                          title: user.name) %>
+                    <% end %>
+                  </div>
+                <% end %>
               </div>
+
+              <hr class="my-4">
+
+              <% if authenticated_user? %>
+                <div class="d-grid">
+                  <%= link_to new_shop_report_path(@shop), class: "btn btn-success" do %>
+                    <i class="fa-regular fa-pen-to-square me-1"></i>コメントを投稿する
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="small text-secondary mb-2">投稿するにはログインが必要です。</div>
+                <div class="d-grid">
+                  <%= link_to users_sign_in_path, class: "btn btn-outline-success" do %>
+                    <i class="fa-solid fa-right-to-bracket me-1"></i>ログインしてコメントを投稿する
+                  <% end %>
+                </div>
+              <% end %>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@
 <div class="container py-5">
   <div class="mb-4">
     <h1 class="h2 mb-1">管理ダッシュボード</h1>
-    <p class="text-secondary mb-0">店舗・レビュー・タグ管理の起点となる画面です。</p>
+    <p class="text-secondary mb-0">店舗・コメント・タグ管理の起点となる画面です。</p>
   </div>
 
   <div class="row g-4">
@@ -12,7 +12,7 @@
         <div class="card-body p-4">
           <div class="fs-2 text-primary mb-3"><i class="fa-solid fa-store"></i></div>
           <h2 class="h5">店舗管理</h2>
-          <p class="text-secondary">掲載店舗の登録・編集・削除をここから行います。</p>
+          <p class="text-secondary">掲載している店舗の登録・編集・削除をここから行います。</p>
           <%= link_to admin_shops_path, class: "btn btn-outline-primary" do %>
             一覧を見る
           <% end %>
@@ -23,8 +23,11 @@
       <div class="card border-0 shadow-sm h-100">
         <div class="card-body p-4">
           <div class="fs-2 text-warning mb-3"><i class="fa-regular fa-flag"></i></div>
-          <h2 class="h5">レビュー管理</h2>
-          <p class="text-secondary mb-0">ユーザー投稿の確認や不要レビューの整理を行います。</p>
+          <h2 class="h5">コメント管理</h2>
+          <p class="text-secondary">ユーザーの確認や不適切なコメントの整理を行います。</p>
+          <%= link_to admin_reports_path, class: "btn btn-outline-warning" do %>
+            一覧を見る
+          <% end %>
         </div>
       </div>
     </div>
@@ -33,7 +36,10 @@
         <div class="card-body p-4">
           <div class="fs-2 text-success mb-3"><i class="fa-solid fa-tags"></i></div>
           <h2 class="h5">タグ管理</h2>
-          <p class="text-secondary mb-0">検索しやすいように、タグの追加やメンテナンスを行います。</p>
+          <p class="text-secondary">検索しやすいように、タグの追加やメンテナンスを行います。</p>
+          <%= link_to admin_tags_path, class: "btn btn-outline-success" do %>
+            一覧を見る
+          <% end %>
         </div>
       </div>
     </div>

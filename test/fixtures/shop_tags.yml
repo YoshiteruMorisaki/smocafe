@@ -1,0 +1,11 @@
+shibuya_wifi:
+  shop: shibuya_lounge
+  tag: wifi
+
+shibuya_power:
+  shop: shibuya_lounge
+  tag: power
+
+shinjuku_quiet:
+  shop: shinjuku_smoke
+  tag: quiet

@@ -1,0 +1,47 @@
+<% content_for :title, "Smocafe Admin | タグ管理" %>
+
+<div class="container py-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h2 mb-1">タグ管理</h1>
+      <p class="text-secondary mb-0">店舗情報に紐づけるタグの登録・編集・削除を行います。</p>
+    </div>
+    <%= link_to new_admin_tag_path, class: "btn btn-success" do %>
+      <i class="fa-solid fa-plus me-1"></i>新規タグを追加
+    <% end %>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>タグ名</th>
+            <th>紐づき店舗数</th>
+            <th class="text-end">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tags.each do |tag| %>
+            <tr>
+              <td class="fw-semibold"><%= tag.name %></td>
+              <td><span class="badge text-bg-light border"><%= tag.shops.count %>件</span></td>
+              <td>
+                <div class="d-flex justify-content-end gap-2">
+                  <%= link_to edit_admin_tag_path(tag), class: "btn btn-sm btn-outline-success" do %>
+                    編集
+                  <% end %>
+                  <%= link_to admin_tag_path(tag), class: "btn btn-sm btn-outline-danger", data: { turbo_method: :delete, turbo_confirm: "#{tag.name}を削除しますか？" } do %>
+                    削除
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%= render "shared/pagination", collection: @tags %>
+</div>

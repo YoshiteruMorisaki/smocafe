@@ -1,0 +1,58 @@
+<% content_for :title, "Smocafe | #{@shop.name} の投稿一覧" %>
+
+<div class="container py-5">
+  <div class="mb-4 d-flex flex-wrap gap-2">
+    <%= link_to shop_path(@shop), class: "btn btn-link px-0 text-decoration-none" do %>
+      <i class="fa-solid fa-arrow-left me-1"></i>店舗詳細へ戻る
+    <% end %>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-lg-5">
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+        <div>
+          <p class="text-success fw-semibold mb-1"><%= @shop.area %></p>
+          <h1 class="h3 mb-0"><%= @shop.name %> の投稿一覧</h1>
+        </div>
+        <% if authenticated_user? %>
+          <%= link_to new_shop_report_path(@shop), class: "btn btn-success" do %>
+            <i class="fa-regular fa-pen-to-square me-1"></i>投稿する
+          <% end %>
+        <% end %>
+      </div>
+
+      <% if @reports.any? %>
+        <div class="d-grid gap-3">
+          <% @reports.each do |report| %>
+            <article class="border rounded-3 p-3 p-md-4 bg-white">
+              <div class="d-flex flex-column flex-md-row justify-content-between gap-2 mb-2">
+                <div class="small text-secondary">
+                  <i class="fa-regular fa-calendar me-1"></i>利用日: <%= l(report.visited_on, format: :short) %>
+                </div>
+                <div class="small text-secondary">
+                  投稿者: <%= report.user.name %>
+                </div>
+              </div>
+
+              <p class="small mb-2">
+                電子タバコ: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
+                <span class="mx-1">/</span>
+                紙タバコ: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
+              </p>
+
+              <p class="mb-0 text-secondary"><%= simple_format(report.comment) %></p>
+            </article>
+          <% end %>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-center">
+          <%= paginate @reports %>
+        </div>
+      <% else %>
+        <div class="alert alert-light border mb-0">
+          この店舗にはまだ投稿がありません。
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

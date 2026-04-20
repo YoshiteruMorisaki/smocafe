@@ -1,0 +1,92 @@
+<% content_for :title, "Smocafe | 投稿編集" %>
+
+<div class="container py-5">
+  <div class="mb-4">
+    <%= link_to users_my_page_path, class: "btn btn-link px-0 text-decoration-none" do %>
+      <i class="fa-solid fa-arrow-left me-1"></i>マイページへ戻る
+    <% end %>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-lg-5">
+          <h1 class="h3 mb-2">投稿を編集</h1>
+          <p class="text-secondary mb-4">
+            <span class="fw-semibold text-dark"><%= @shop.name %></span> への投稿を編集します。
+          </p>
+
+          <%= form_with model: @report, url: report_path(@report), method: :patch, class: "row g-3" do |f| %>
+            <div class="col-12">
+              <%= f.label :visited_on, class: "form-label" %>
+              <%= f.date_field :visited_on, class: "form-control", required: true, max: Date.current %>
+            </div>
+
+            <div class="col-12">
+              <%= f.label :heated_tobacco_status, class: "form-label" %>
+              <%= f.select :heated_tobacco_status,
+                    Report.heated_tobacco_statuses.keys.map { |key| [Report.human_enum_name(:heated_tobacco_status, key), key] },
+                    {},
+                    class: "form-select", required: true %>
+            </div>
+
+            <div class="col-12">
+              <%= f.label :papper_tobacco_status, class: "form-label" %>
+              <%= f.select :papper_tobacco_status,
+                    Report.papper_tobacco_statuses.keys.map { |key| [Report.human_enum_name(:papper_tobacco_status, key), key] },
+                    {},
+                    class: "form-select", required: true %>
+            </div>
+
+            <div class="col-12">
+              <%= f.label :comment, class: "form-label" %>
+              <%= f.text_area :comment, class: "form-control", rows: 6, maxlength: 1000, required: true %>
+              <div class="form-text">最大1000文字</div>
+            </div>
+
+            <% if @tags.present? %>
+              <div class="col-12">
+                <label class="form-label">タグ（店舗に追加するタグを選択）</label>
+                <% already_tagged_ids = @shop.tag_ids %>
+                <div class="d-flex flex-wrap gap-2 mt-1">
+                  <% @tags.each do |tag| %>
+                    <% already_added = already_tagged_ids.include?(tag.id) %>
+                    <% if already_added %>
+                      <span class="badge text-bg-success fs-6 fw-normal px-3 py-2">
+                        <i class="bi bi-check-lg me-1"></i><%= tag.name %>
+                      </span>
+                    <% else %>
+                      <div class="form-check form-check-inline border rounded px-3 py-2 mb-0">
+                        <%= check_box_tag "report[tag_ids][]", tag.id, false, class: "form-check-input", id: "tag_#{tag.id}" %>
+                        <label class="form-check-label" for="tag_<%= tag.id %>"><%= tag.name %></label>
+                      </div>
+                    <% end %>
+                  <% end %>
+                </div>
+                <div class="form-text">追加済みのタグ（緑色）は変更できません。</div>
+              </div>
+            <% end %>
+
+            <% if @report.errors.any? %>
+              <div class="col-12">
+                <div class="alert alert-danger mb-0">
+                  <p class="fw-semibold mb-2">入力内容をご確認ください。</p>
+                  <ul class="mb-0 ps-3">
+                    <% @report.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="col-12 d-flex flex-wrap gap-2 pt-2">
+              <%= f.submit "更新する", class: "btn btn-success" %>
+              <%= link_to "キャンセル", users_my_page_path, class: "btn btn-outline-secondary" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

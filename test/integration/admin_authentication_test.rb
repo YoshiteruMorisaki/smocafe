@@ -15,6 +15,7 @@ class AdminAuthenticationTest < ActionDispatch::IntegrationTest
     assert_redirected_to admin_root_path
     follow_redirect!
     assert_response :success
-    assert_match admins(:primary).email_address, response.body
+    # ログイン後はダッシュボードが表示される（メールアドレス表示は廃止済み）
+    assert_match "管理ダッシュボード", response.body
   end
 end

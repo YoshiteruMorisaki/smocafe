@@ -1,0 +1,32 @@
+<%# ブックマークボタン部分テンプレート
+    使い方: render "shared/bookmark_button", shop: shop, bookmarked: true/false
+    - bookmarked を渡すと DB アクセスなしで状態を表示（一覧など複数表示時に利用）
+    - bookmarked を省略した場合は current_user から直接判定（単一shop表示時に利用） %>
+
+<%# bookmarked ローカル変数が渡されていれば使い、なければ DB で確認 %>
+<% bookmarked = local_assigns.key?(:bookmarked) ? bookmarked : (authenticated_user? && current_user.bookmarks.exists?(shop: shop)) %>
+<% if authenticated_user? %>
+  <%# この span の id を Turbo Stream が差し替えターゲットとして使用する
+      dom_id(shop, :bookmark) => "bookmark_shop_1" のような一意な ID になる %>
+  <span id="<%= dom_id(shop, :bookmark) %>">
+    <% if bookmarked %>
+      <%# data-turbo-stream: true により、フォーム送信を Turbo Stream リクエストとして扱う
+          サーバーは turbo_stream フォーマットで応答し、span 要素だけを差し替える %>
+      <%= button_to shop_bookmark_path(shop), method: :delete,
+            data: { turbo_stream: true },
+            form_class: "btn-bookmark-form",
+            class: "btn-bookmark btn-bookmark--active",
+            aria: { label: "ブックマーク解除" } do %>
+        <i class="fa-solid fa-star"></i>
+      <% end %>
+    <% else %>
+      <%= button_to shop_bookmark_path(shop), method: :post,
+            data: { turbo_stream: true },
+            form_class: "btn-bookmark-form",
+            class: "btn-bookmark",
+            aria: { label: "ブックマーク追加" } do %>
+        <i class="fa-regular fa-star"></i>
+      <% end %>
+    <% end %>
+  </span>
+<% end %>

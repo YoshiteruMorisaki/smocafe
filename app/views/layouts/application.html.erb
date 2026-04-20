@@ -49,9 +49,6 @@
                     <i class="fa-solid fa-chart-line me-1"></i>ダッシュボード
                   <% end %>
                 </li>
-                <li class="nav-item text-white-50 small me-lg-2">
-                  <i class="fa-regular fa-user me-1"></i><%= current_admin.email_address %>
-                </li>
                 <li class="nav-item">
                   <%= link_to admin_sign_out_path, class: "btn btn-outline-light btn-sm", data: { turbo_method: :delete } do %>
                     <i class="fa-solid fa-right-from-bracket me-1"></i>ログアウト
@@ -75,9 +72,6 @@
                   <%= link_to users_my_page_path, class: "nav-link" do %>
                     <i class="fa-regular fa-user me-1"></i>マイページ
                   <% end %>
-                </li>
-                <li class="nav-item text-white-50 small me-lg-2">
-                  <i class="fa-regular fa-envelope me-1"></i><%= current_user.email_address %>
                 </li>
                 <li class="nav-item">
                   <%= link_to users_sign_out_path, class: "btn btn-outline-light btn-sm", data: { turbo_method: :delete } do %>
@@ -121,7 +115,7 @@
       <div class="container-fluid px-3 px-md-4 px-lg-5">
         <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 gap-md-3 small text-secondary text-center w-100">
           <span class="fw-semibold text-dark">Smocafe</span>
-          <span>喫煙可能なカフェを、もっとスマートに探す。</span>
+          <span>喫煙可能なカフェ探し、もっとスマートに。</span>
           <%= link_to "About", about_path, class: "text-secondary text-decoration-none" %>
           <span class="text-black-50">|</span>
           <%= link_to "利用規約", root_path, class: "text-secondary text-decoration-none" %>

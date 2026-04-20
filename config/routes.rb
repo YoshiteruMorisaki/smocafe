@@ -18,6 +18,7 @@
 
     # マイページ / 会員情報編集 / 退会
     get "users/my_page", to: "users#show"
+    get "users/my_reports", to: "users#my_reports"
     get "users/information/edit", to: "users#edit"
     patch "users", to: "users#update"
     get "users/unsubscribe", to: "users#unsubscribe"
@@ -26,7 +27,7 @@
     # カフェ一覧・詳細
     # 各店舗に対してレビュー投稿とブックマーク登録をネストしています。
     resources :shops, only: [:index, :show] do
-      resources :reports, only: [:new, :create]
+      resources :reports, only: [:index, :new, :create]
       resource :bookmark, only: [:create, :destroy]
     end
 
@@ -51,5 +52,10 @@
     resources :shops, except: [:show]
     resources :reports, only: [:index, :destroy]
     resources :tags, except: [:show]
+    resources :users, only: [] do
+      member do
+        patch :toggle_active
+      end
+    end
   end
 end

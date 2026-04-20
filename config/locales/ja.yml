@@ -2,6 +2,8 @@ ja:
   activerecord:
     models:
       shop: 店舗
+      tag: タグ
+      report: 投稿
     attributes:
       shop:
         name: 店舗名
@@ -24,10 +26,29 @@ ja:
           unknown: 不明
           allowed: 可
           disallowed: 不可
+      tag:
+        name: タグ名
+      report:
+        visited_on: 利用日
+        heated_tobacco_status: 電子タバコ可否
+        papper_tobacco_status: 紙タバコ可否
+        comment: コメント
+        heated_tobacco_statuses:
+          unknown: 不明
+          allowed: 可
+          disallowed: 不可
+        papper_tobacco_statuses:
+          unknown: 不明
+          allowed: 可
+          disallowed: 不可
   time:
     formats:
       short: "%Y/%m/%d %H:%M"
       long: "%Y年%m月%d日 %H:%M"
+  date:
+    formats:
+      short: "%Y/%m/%d"
+      long: "%Y年%m月%d日"
   errors:
     messages:
       inclusion: は一覧にありません

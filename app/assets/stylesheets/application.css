@@ -1,4 +1,12 @@
-/* Bootstrapベースに、トップ画面のヒーローだけ最小限の見た目を追加します。 */
+/*
+ * Bootstrap ベース。各セクションの独自スタイルのみ定義。
+ * Bootstrap のユーティリティクラスで対応できるものはここには書かない。
+ */
+
+/* ==============================
+   トップページ: ヒーローセクション
+   背景画像上にキャッチコピーとCTAボタンを重ねて表示するレイアウト
+   ============================== */
 
 .top-hero {
 	background-position: center center;
@@ -16,6 +24,7 @@
 
 .top-hero__brand {
 	font-family: inherit;
+	/* clamp(最小, 流動値, 最大): ビューポート幅に応じてフォントサイズを滑らかに変化させる */
 	font-size: clamp(2rem, 3.6vw, 2.9rem);
 	font-weight: 600;
 	letter-spacing: 0.02em;
@@ -44,8 +53,10 @@
 
 .top-hero__action-btn {
 	align-items: center;
+	/* 背景画像に馴染ませるため半透明の茶色 */
 	background: rgba(92, 67, 48, 0.74);
 	border: 3px solid rgba(255, 255, 255, 0.96);
+	/* border-radius: 0 で角丸なし（スクエアなデザイン）*/
 	border-radius: 0;
 	color: #fff;
 	display: flex;
@@ -82,6 +93,7 @@
 	letter-spacing: 0.03em;
 }
 
+/* タブレット以下: ヒーロー背景画像の中心を少し右にずらして見切れないように調整 */
 @media (max-width: 991.98px) {
 	.top-hero {
 		background-position: 58% center;
@@ -114,6 +126,11 @@
 		width: 2.8rem;
 	}
 }
+
+/* ==============================
+   トップページ: おすすめ店舗一覧セクション
+   エリアごとに店舗カードを横スクロールで並べる
+   ============================== */
 
 .top-shop-section {
 	background: linear-gradient(180deg, #fffdf8 0%, #f5efe7 100%);
@@ -179,7 +196,9 @@
 }
 
 .top-shop-card__image-wrap {
+	/* aspect-ratio: 1/1 で正方形に固定し、画像の縦横比に依存しない安定したレイアウトにする */
 	aspect-ratio: 1 / 1;
+	/* 画像未読込時のフォールバック背景色 */
 	background: #e8dfd4;
 	overflow: hidden;
 	width: 100%;
@@ -203,6 +222,7 @@
 	font-weight: 700;
 	line-height: 1.4;
 	margin-bottom: 0.4rem;
+	/* min-height で1行・2行の店舗名でもカード高さを揃える */
 	min-height: 2.9rem;
 }
 
@@ -219,6 +239,11 @@
 	line-height: 1.55;
 	margin-bottom: 0;
 }
+
+/* ==============================
+   店舗一覧: エリアチップ絞り込み
+   横並びのタグチップでエリアを選択するフィルター UI
+   ============================== */
 
 .shop-area-filter {
 	background: linear-gradient(135deg, #fffefb 0%, #f6efe5 100%);
@@ -288,16 +313,24 @@
 	transform: translateY(-1px);
 }
 
+/* 選択中のエリアチップ: 茶色で塗りつぶして強調表示 */
 .shop-area-filter__chip.is-active {
 	background: #5d452e;
 	border-color: #5d452e;
 	color: #fff;
 }
 
+/* ==============================
+   店舗一覧ページ: サイドバー + メインコンテンツの2カラムレイアウト
+   PC: 左サイドバー(フィルター) + 右メイン(結果)
+   タブレット以下(@media 991px): 1カラムに切り替え
+   ============================== */
+
 .shop-index-layout {
 	align-items: start;
 	display: grid;
 	gap: 2rem;
+	/* サイドバーを 260-300px に固定し、メイン側は残り幅をすべて使う */
 	grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
 }
 
@@ -386,16 +419,23 @@
 	min-width: 0;
 }
 
+/* ==============================
+   フィルターパネル（PC サイドバー）
+   スクロールしてもフィルターが常に見えるよう sticky で追従させる
+   ============================== */
+
 .shop-filter-panel {
 	background: #fff;
 	border: 1px solid rgba(93, 69, 46, 0.14);
 	border-radius: 1rem;
 	box-shadow: 0 14px 28px rgba(74, 54, 38, 0.06);
 	overflow: hidden;
+	/* スクロール時にサイドバーが画面上部に貼り付く */
 	position: sticky;
 	top: 1rem;
 }
 
+/* モバイル用オフキャンバス内では sticky を解除してスクロールに干渉しないようにする */
 .shop-filter-panel--mobile {
 	box-shadow: none;
 	overflow: visible;
@@ -450,17 +490,25 @@
 	position: relative;
 }
 
+/*
+ * カスタムチェックボックスの実装
+ * ブラウザデフォルトの input[type=checkbox] を非表示にして、
+ * 隣の .shop-filter-option__indicator を代わりに表示する。
+ * input は opacity: 0 のまま重ねて配置し、クリック領域はシステムに委ねる。
+ */
 .shop-filter-option__input {
 	height: 2.5rem;
 	left: 0;
 	margin: 0;
 	top: 0;
+	/* 見えないが、クリック・フォーカス・キーボード操作は通常通り動作する */
 	opacity: 0;
 	position: absolute;
 	width: 2.5rem;
 	z-index: 1;
 }
 
+/* デフォルト状態: グレーの丸いチェックマーク */
 .shop-filter-option__indicator {
 	align-items: center;
 	border: 3px solid #d6d3cf;
@@ -479,10 +527,21 @@
 	line-height: 1;
 }
 
+/* チェック時: input の直後の indicator を緑色に変える（隣接セレクターで状態連動） */
 .shop-filter-option__input:checked + .shop-filter-option__indicator {
 	background: #f3faf5;
 	border-color: #2f8f4e;
 	color: #2f8f4e;
+}
+
+.shop-filter-tags {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.shop-filter-option--tag {
+	padding-bottom: 1rem;
+	padding-top: 1rem;
 }
 
 .shop-filter-form__actions {
@@ -522,6 +581,12 @@
 	text-decoration: underline;
 }
 
+/* ==============================
+   店舗一覧: 検索結果カード
+   PC: 左に画像 / 右に情報の横並び
+   タブレット以下(@media 991px): 縦積みに切り替え
+   ============================== */
+
 .shop-results {
 	display: grid;
 	gap: 1.5rem;
@@ -534,6 +599,8 @@
 	box-shadow: 0 14px 28px rgba(74, 54, 38, 0.06);
 	display: grid;
 	gap: 1.5rem;
+	/* 画像カラムを 220-320px に固定し、情報カラムは残り幅を使う */
+	/* minmax(0, 1fr) の 0 は最小幅を 0 にして、長いテキストで幅が広がるのを防ぐ */
 	grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
 	overflow: hidden;
 	padding: 1.25rem;
@@ -616,6 +683,7 @@
 	margin: 0;
 }
 
+/* ラベル(dt)を 6rem 固定にして、値(dd)の開始位置を揃える定義リストレイアウト */
 .shop-result-card__detail-row {
 	display: grid;
 	gap: 0.75rem;
@@ -654,6 +722,11 @@
 	min-width: 8rem;
 }
 
+/* ==============================
+   ページネーション（kaminari デフォルトHTMLに上書き）
+   Bootstrap の .page-link をカスタムカラーに変更する
+   ============================== */
+
 .pagination .page-link {
 	box-shadow: none;
 	min-width: 2.5rem;
@@ -677,8 +750,14 @@
 	color: #9a938d;
 }
 
+/* ==============================
+   モバイル用オフキャンバス（スマホでフィルターを開くドロワー）
+   Bootstrap の offcanvas コンポーネントの見た目を上書き
+   ============================== */
+
 .shop-mobile-offcanvas {
 	background: #fbf8f2;
+	/* 画面幅の 92% を上限にして、小さい端末でも両端に隙間を残す */
 	max-width: 92vw;
 }
 
@@ -698,6 +777,7 @@
 .shop-mobile-offcanvas__body {
 	display: grid;
 	gap: 1rem;
+	overflow-y: auto;
 	padding: 1rem;
 }
 
@@ -798,8 +878,13 @@
 	}
 }
 
+/* タブレット以下: 2カラムを1カラムに変更。サイドバーはオフキャンバスへ移動 */
 @media (max-width: 991.98px) {
 	.shop-index-layout {
+		grid-template-columns: 1fr;
+	}
+
+	.shop-filter-tags {
 		grid-template-columns: 1fr;
 	}
 
@@ -855,6 +940,11 @@
 	.shop-index-page {
 		padding-top: 1.5rem !important;
 		padding-bottom: 2rem !important;
+	}
+
+	.shop-filter-option--tag {
+		padding-bottom: 0.9rem;
+		padding-top: 0.9rem;
 	}
 
 	.shop-index-header__title {
@@ -928,8 +1018,7 @@
 		justify-content: center;
 	}
 }
-
-@media (min-width: 992px) and (max-width: 1199.98px) {
+/* 中間サイズ(992-1199px): サイドバーが狭くなりすぎるため1カラムに戻す */@media (min-width: 992px) and (max-width: 1199.98px) {
 	.shop-index-layout {
 		grid-template-columns: 1fr;
 	}
@@ -941,4 +1030,68 @@
 	.shop-result-card {
 		grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
 	}
+}
+
+/* ==============================
+   ブックマークボタン (Google スター風)
+   ============================== */
+
+/*
+ * button_to は Rails がフォームタグを生成するため、デフォルトでブロック要素になる。
+ * inline-flex にすることで周囲のアイコンやテキストと横並びで配置できるようにする。
+ */
+.btn-bookmark-form {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+/*
+ * ブックマークボタン本体
+ * appearance: none と !important の多用は、Bootstrap および ブラウザのボタンデフォルトスタイルを
+ * 完全に打ち消すため。特に Safari では -webkit-appearance が残ると枠や背景が付いてしまう。
+ */
+.btn-bookmark {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  margin: 0;
+  background-color: transparent !important;
+  cursor: pointer;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+  color: #9e9e9e;
+  flex-shrink: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.btn-bookmark:hover {
+  color: #757575;
+  background-color: rgba(117, 117, 117, 0.12);
+  transform: scale(1.2);
+}
+
+.btn-bookmark i {
+  font-size: 1.25rem;
+  pointer-events: none;
+}
+
+/* 登録済み: 灰色 */
+.btn-bookmark--active {
+  color: #555555;
+}
+
+.btn-bookmark--active:hover {
+  color: #333333;
+  background-color: rgba(0, 0, 0, 0.08);
 }

@@ -1,7 +1,7 @@
 <% content_for :title, "Smocafe | 店舗一覧" %>
 
 <% clear_filters_path = shops_path(@selected_area.present? ? { area: @selected_area } : {}) %>
-<% active_filter_count = @selected_filters.size + (@selected_area.present? ? 1 : 0) %>
+<% active_filter_count = @selected_filters.size + @selected_tag_ids.size + (@selected_area.present? ? 1 : 0) %>
 
 <div class="container py-5 shop-index-page">
   <section class="shop-index-mobile-tools d-lg-none" aria-label="スマートフォン向け絞り込みメニュー">
@@ -25,7 +25,7 @@
     <aside class="shop-index-sidebar d-none d-lg-block" aria-label="詳細条件で絞り込み">
       <div class="shop-filter-panel">
         <div class="shop-filter-panel__heading">絞り込む</div>
-        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, clear_path: clear_filters_path %>
+        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, selected_tag_ids: @selected_tag_ids, available_tags: @available_tags, clear_path: clear_filters_path %>
       </div>
     </aside>
 
@@ -73,6 +73,7 @@
                     <h2 class="shop-result-card__name"><%= shop.name %></h2>
                     <p class="shop-result-card__address"><i class="fa-solid fa-location-dot me-1"></i><%= shop.address %></p>
                   </div>
+                  <%= render "shared/bookmark_button", shop: shop, bookmarked: @bookmarked_shop_ids.include?(shop.id) %>
                   <span class="shop-result-card__updated"><%= l(shop.last_reported_at, format: :short) if shop.last_reported_at.present? %></span>
                 </div>
 
@@ -80,7 +81,14 @@
                   <span class="badge text-bg-success-subtle text-success-emphasis">電子: <%= shop.heated_tobacco_status_i18n %></span>
                   <span class="badge text-bg-warning-subtle text-warning-emphasis">紙: <%= shop.papper_tobacco_status_i18n %></span>
                   <span class="badge text-bg-info-subtle text-info-emphasis">Wi-Fi: <%= shop.wifi_available? ? "あり" : "なし" %></span>
-                  <span class="badge text-bg-secondary">電源: <%= shop.power_available? ? "あり" : "なし" %></span>
+                  <% if shop.power_available? %>
+                    <span class="badge text-bg-success"><i class="fa-solid fa-bolt me-1"></i>電源あり</span>
+                  <% else %>
+                    <span class="badge text-bg-light border text-muted">電源なし</span>
+                  <% end %>
+                  <% shop.tag_names.each do |tag_name| %>
+                    <span class="badge rounded-pill text-bg-light border"><%= tag_name %></span>
+                  <% end %>
                 </div>
 
                 <dl class="shop-result-card__details">
@@ -96,9 +104,12 @@
 
                 <p class="shop-result-card__description"><%= truncate(shop.description.to_s, length: 130) %></p>
 
-                <%= link_to shop_path(shop), class: "btn btn-outline-success shop-result-card__link" do %>
-                  詳細を見る
-                <% end %>
+                <div class="d-flex align-items-center gap-2">
+                  <%= link_to shop_path(shop), class: "btn btn-outline-success shop-result-card__link" do %>
+                    詳細を見る
+                  <% end %>
+
+                </div>
               </div>
             </article>
           <% end %>
@@ -150,7 +161,7 @@
       </div>
 
       <div class="shop-filter-panel shop-filter-panel--mobile">
-        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, clear_path: clear_filters_path, submit_label: "この条件で表示" %>
+        <%= render "filter_form", selected_area: @selected_area, filter_options: @filter_options, selected_filters: @selected_filters, selected_tag_ids: @selected_tag_ids, available_tags: @available_tags, clear_path: clear_filters_path, submit_label: "この条件で表示" %>
       </div>
     </section>
   </div>

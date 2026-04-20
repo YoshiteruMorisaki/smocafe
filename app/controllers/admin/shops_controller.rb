@@ -1,8 +1,9 @@
 class Admin::ShopsController < Admin::ApplicationController
   before_action :set_shop, only: %i[edit update destroy]
+  before_action :set_tags, only: %i[new create edit update]
 
   def index
-    @shops = paginate_collection(Shop.recent_first)
+    @shops = paginate_collection(Shop.including_tags.recent_first)
   end
 
   def new
@@ -42,6 +43,10 @@ class Admin::ShopsController < Admin::ApplicationController
     @shop = Shop.find(params[:id])
   end
 
+  def set_tags
+    @tags = Tag.alphabetical
+  end
+
   def shop_params
     params.require(:shop).permit(
       :name,
@@ -55,7 +60,8 @@ class Admin::ShopsController < Admin::ApplicationController
       :power_available,
       :description,
       :last_reported_at,
-      :image
+      :image,
+      tag_ids: []
     )
   end
 end

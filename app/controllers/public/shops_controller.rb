@@ -21,10 +21,11 @@ class Public::ShopsController < Public::ApplicationController
   end
 
   def show
-    @shop = Shop.includes(:tags).find(params[:id])
+    @shop = Shop.includes(:tags, :bookmarked_by_users).find(params[:id])
     @latest_reports = @shop.reports.includes(:user)
       .order(visited_on: :desc, created_at: :desc, id: :desc)
       .limit(3)
+    @bookmarked_users = @shop.bookmarked_by_users
   end
 
   private

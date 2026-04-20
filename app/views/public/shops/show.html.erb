@@ -1,8 +1,9 @@
 <% content_for :title, "Smocafe | #{@shop.name}" %>
 
 <div class="container py-5">
+  <% back_url = request.referer&.start_with?(shops_url.split("?").first) ? request.referer : shops_path %>
   <div class="mb-4">
-    <%= link_to shops_path, class: "btn btn-link px-0 text-decoration-none" do %>
+    <%= link_to back_url, class: "btn btn-link px-0 text-decoration-none" do %>
       <i class="fa-solid fa-arrow-left me-1"></i>店舗一覧へ戻る
     <% end %>
   </div>
@@ -83,7 +84,13 @@
                         <div class="small text-secondary">
                           <i class="fa-regular fa-calendar me-1"></i><%= l(report.visited_on, format: :short) %>
                         </div>
-                        <div class="small text-secondary"><%= report.user.name %></div>
+                        <div class="d-flex align-items-center gap-2">
+                          <%= image_tag(report.user.display_profile_image || "/no_profile_image.jpg",
+                              class: "rounded-circle",
+                              style: "width: 24px; height: 24px; object-fit: cover;",
+                              alt: report.user.name) %>
+                          <span class="small text-secondary"><%= report.user.name %></span>
+                        </div>
                       </div>
                       <p class="small mb-2">
                         電子タバコ: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
@@ -102,6 +109,23 @@
               <% else %>
                 <p class="text-secondary mb-0">まだ投稿がありません。</p>
               <% end %>
+
+              <hr class="my-4">
+
+              <div class="rounded-3 bg-white border p-3 mb-4">
+                <h2 class="h6 text-secondary mb-3">ブックマークしている人 <span class="fw-semibold text-body"><%= @bookmarked_users.size %>人</span></h2>
+                <% if @bookmarked_users.any? %>
+                  <div class="d-flex flex-wrap gap-1">
+                    <% @bookmarked_users.each do |user| %>
+                      <%= image_tag(user.display_profile_image || "/no_profile_image.jpg",
+                          class: "rounded-circle border",
+                          style: "width: 36px; height: 36px; object-fit: cover;",
+                          alt: user.name,
+                          title: user.name) %>
+                    <% end %>
+                  </div>
+                <% end %>
+              </div>
 
               <hr class="my-4">
 

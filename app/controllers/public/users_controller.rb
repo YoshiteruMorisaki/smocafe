@@ -1,6 +1,8 @@
 class Public::UsersController < Public::ApplicationController
   def show
     @user = current_user
+    @recent_reports = @user.reports.newest_first.limit(3)
+    @recent_bookmarks = @user.bookmarked_shops.order("bookmarks.created_at desc").limit(3)
   end
 
   def edit
@@ -16,6 +18,12 @@ class Public::UsersController < Public::ApplicationController
       flash.now[:alert] = "更新に失敗しました。入力内容をご確認ください。"
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def my_reports
+    @reports = paginate_collection(
+      current_user.reports.includes(:shop).order(visited_on: :desc, created_at: :desc, id: :desc)
+    )
   end
 
   def unsubscribe
@@ -34,7 +42,7 @@ class Public::UsersController < Public::ApplicationController
   private
 
   def user_params
-    permitted = params.require(:user).permit(:name, :email_address, :password, :password_confirmation)
+    permitted = params.require(:user).permit(:name, :email_address, :password, :password_confirmation, :profile_image)
 
     if permitted[:password].blank?
       permitted.delete(:password)

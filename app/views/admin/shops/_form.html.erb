@@ -98,7 +98,7 @@
   <% end %>
 
   <div class="col-12 d-flex gap-2">
-    <%= form.submit class: "btn btn-primary" %>
+    <%= form.submit(form.object.persisted? ? "店舗を更新する" : "店舗を作成する", class: "btn btn-primary") %>
     <%= link_to admin_shops_path, class: "btn btn-outline-secondary" do %>
       戻る
     <% end %>

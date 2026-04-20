@@ -52,5 +52,10 @@
     resources :shops, except: [:show]
     resources :reports, only: [:index, :destroy]
     resources :tags, except: [:show]
+    resources :users, only: [] do
+      member do
+        patch :toggle_active
+      end
+    end
   end
 end

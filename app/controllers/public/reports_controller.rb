@@ -3,6 +3,8 @@ class Public::ReportsController < Public::ApplicationController
   before_action :set_report, only: [:edit, :update, :destroy]
 
   def index
+    # includes(:user) で投稿一覧のユーザー表示 N+1 を防止
+    # order に id も加えることで visited_on・created_at が同値の場合も順序を一定に保つ
     @reports = paginate_collection(
       @shop.reports.includes(:user).order(visited_on: :desc, created_at: :desc, id: :desc)
     )

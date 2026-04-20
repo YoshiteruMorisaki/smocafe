@@ -46,6 +46,8 @@ module Admin::Authentication
   end
 
   def start_new_session_for(admin)
+    # httponly: JS から読み取れないようにして XSS 対策
+    # same_site: :lax で CSRF リスクを軽減
     admin.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |auth_session|
       Current.session = auth_session
       cookies.signed.permanent[:admin_session_id] = { value: auth_session.id, httponly: true, same_site: :lax }
@@ -53,6 +55,7 @@ module Admin::Authentication
   end
 
   def terminate_session
+    # DB のセッションレコードを削除し、Current.session と Cookie の両方をクリア
     Current.session&.destroy
     Current.session = nil
     cookies.delete(:admin_session_id)

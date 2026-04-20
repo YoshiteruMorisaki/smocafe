@@ -1,3 +1,7 @@
+<%# ブックマーク解除後の Turbo Stream レスポンス
+    turbo_stream.replace: 指定 id の要素をブロック内の HTML で差し替える
+    dom_id(@shop, :bookmark) は _bookmark_button.html.erb 内の span の id と一致させる必要がある
+    これにより、ページ全体をリロードせずにボタン表示だけを「未追加（空星）」に更新する %>
 <%= turbo_stream.replace dom_id(@shop, :bookmark) do %>
   <%= render "shared/bookmark_button", shop: @shop %>
 <% end %>

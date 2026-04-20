@@ -18,7 +18,7 @@
   <% end %>
 
   <div class="col-12 d-flex gap-2">
-    <%= form.submit class: "btn btn-success" %>
+    <%= form.submit(form.object.persisted? ? "タグを更新する" : "タグを作成する", class: "btn btn-success") %>
     <%= link_to admin_tags_path, class: "btn btn-outline-secondary" do %>
       戻る
     <% end %>

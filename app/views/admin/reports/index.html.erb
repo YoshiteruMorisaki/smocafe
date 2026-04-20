@@ -1,0 +1,86 @@
+<% content_for :title, "Smocafe Admin | レビュー管理" %>
+
+<div class="container py-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+      <h1 class="h2 mb-1">レビュー管理</h1>
+      <p class="text-secondary mb-0">ユーザー投稿の確認・削除、投稿者のアカウント状態を変更します。</p>
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>投稿者</th>
+            <th>店舗</th>
+            <th>来店日</th>
+            <th>電子</th>
+            <th>紙</th>
+            <th>コメント</th>
+            <th>投稿日</th>
+            <th class="text-end">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @reports.each do |report| %>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <%= image_tag(report.user.display_profile_image || "/no_profile_image.jpg",
+                      class: "rounded-circle border",
+                      style: "width: 32px; height: 32px; object-fit: cover;",
+                      alt: report.user.name) %>
+                  <div>
+                    <div class="fw-semibold small"><%= report.user.name %></div>
+                    <% if report.user.is_active %>
+                      <span class="badge text-bg-success">有効</span>
+                    <% else %>
+                      <span class="badge text-bg-secondary">無効</span>
+                    <% end %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="small fw-semibold"><%= report.shop.name %></div>
+                <div class="small text-secondary"><%= report.shop.area %></div>
+              </td>
+              <td class="small"><%= l(report.visited_on, format: :short) %></td>
+              <td class="small"><%= report.heated_tobacco_status_i18n %></td>
+              <td class="small"><%= report.papper_tobacco_status_i18n %></td>
+              <td class="small text-secondary" style="max-width: 200px;">
+                <%= report.comment.truncate(60) %>
+              </td>
+              <td class="small text-secondary"><%= l(report.created_at, format: :short) %></td>
+              <td>
+                <div class="d-flex justify-content-end gap-2 flex-nowrap">
+                  <% if report.user.is_active %>
+                    <%= link_to toggle_active_admin_user_path(report.user),
+                        class: "btn btn-sm btn-outline-secondary",
+                        data: { turbo_method: :patch, turbo_confirm: "#{report.user.name} を無効にしますか？" } do %>
+                      無効化
+                    <% end %>
+                  <% else %>
+                    <%= link_to toggle_active_admin_user_path(report.user),
+                        class: "btn btn-sm btn-outline-success",
+                        data: { turbo_method: :patch, turbo_confirm: "#{report.user.name} を有効にしますか？" } do %>
+                      有効化
+                    <% end %>
+                  <% end %>
+                  <%= link_to admin_report_path(report),
+                      class: "btn btn-sm btn-outline-danger",
+                      data: { turbo_method: :delete, turbo_confirm: "この投稿を削除しますか？" } do %>
+                    削除
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <%= render "shared/pagination", collection: @reports %>
+</div>

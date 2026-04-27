@@ -40,13 +40,13 @@ gem "thruster", require: false
 gem "image_processing", "~> 1.2"
 
 group :production do
-  gem 'mysql2'
+  gem "mysql2"
 end
 
 group :development, :test do
   # Use sqlite3 as the database for Active Record in local environments
   gem "sqlite3", ">= 2.1"
-  gem 'dotenv-rails'
+  gem "dotenv-rails"
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"

@@ -11,7 +11,7 @@ class CreateReports < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :reports, [:shop_id, :visited_on]
+    add_index :reports, [ :shop_id, :visited_on ]
     add_index :reports, :created_at
   end
 end

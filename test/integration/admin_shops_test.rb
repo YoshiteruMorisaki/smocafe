@@ -41,27 +41,27 @@ class AdminShopsTest < ActionDispatch::IntegrationTest
           power_available: "0",
           description: "作業向けの新規店舗",
           last_reported_at: "2026-04-03T09:00",
-          tag_ids: [tags(:wifi).id, tags(:quiet).id]
+          tag_ids: [ tags(:wifi).id, tags(:quiet).id ]
         }
       }
     end
 
     shop = Shop.order(:id).last
     assert_redirected_to admin_shops_path
-    assert_equal [tags(:wifi).name, tags(:quiet).name], shop.reload.tag_names
+    assert_equal [ tags(:wifi).name, tags(:quiet).name ], shop.reload.tag_names
 
     patch admin_shop_path(shop), params: {
       shop: {
         area: "上野",
         papper_tobacco_status: "allowed",
-        tag_ids: [tags(:power).id]
+        tag_ids: [ tags(:power).id ]
       }
     }
 
     assert_redirected_to admin_shops_path
     assert_equal "上野", shop.reload.area
     assert_equal "allowed", shop.papper_tobacco_status
-    assert_equal [tags(:power).name], shop.tag_names
+    assert_equal [ tags(:power).name ], shop.tag_names
 
     assert_difference("Shop.count", -1) do
       delete admin_shop_path(shop)

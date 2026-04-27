@@ -14,7 +14,7 @@ class Shop < ApplicationRecord
   validates :name, :area, :address, presence: true
   validates :area, inclusion: { in: AREAS }
   validates :heated_tobacco_status, :papper_tobacco_status, presence: true
-  validates :wifi_available, :power_available, inclusion: { in: [true, false] }
+  validates :wifi_available, :power_available, inclusion: { in: [ true, false ] }
 
   scope :by_area, ->(area) { where(area: area) }
   scope :newest_first, -> { order(created_at: :desc, id: :desc) }

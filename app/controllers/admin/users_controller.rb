@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::ApplicationController
-  before_action :set_user, only: [:toggle_active]
+  before_action :set_user, only: [ :toggle_active ]
 
   def toggle_active
     @user.update!(is_active: !@user.is_active)

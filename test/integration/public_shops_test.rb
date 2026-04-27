@@ -57,7 +57,7 @@ class PublicShopsTest < ActionDispatch::IntegrationTest
   end
 
   test "guest can filter shops by tag ids" do
-    get shops_path(filters: { tag_ids: [tags(:quiet).id.to_s] })
+    get shops_path(filters: { tag_ids: [ tags(:quiet).id.to_s ] })
 
     assert_response :success
     assert_match shops(:shinjuku_smoke).name, response.body

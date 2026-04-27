@@ -2,7 +2,7 @@ class Report < ApplicationRecord
   belongs_to :user
   belongs_to :shop
 
-  after_commit :sync_shop_statuses_for_related_shops, on: [:create, :update]
+  after_commit :sync_shop_statuses_for_related_shops, on: [ :create, :update ]
   after_commit :sync_shop_statuses_for_destroyed_shop, on: :destroy
 
   enum :heated_tobacco_status, { unknown: 0, allowed: 1, disallowed: 2 }, prefix: true
@@ -25,7 +25,7 @@ class Report < ApplicationRecord
   private
 
   def sync_shop_statuses_for_related_shops
-    related_shop_ids = [shop_id_before_last_save, shop_id].compact.uniq
+    related_shop_ids = [ shop_id_before_last_save, shop_id ].compact.uniq
     related_shop_ids.each { |id| self.class.sync_shop!(id) }
   end
 

@@ -15,6 +15,6 @@ class CreateTagsAndShopTags < ActiveRecord::Migration[8.0]
       t.timestamps
     end
 
-    add_index :shop_tags, [:shop_id, :tag_id], unique: true
+    add_index :shop_tags, [ :shop_id, :tag_id ], unique: true
   end
 end

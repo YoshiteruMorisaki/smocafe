@@ -1,5 +1,5 @@
 class Public::BookmarksController < Public::ApplicationController
-  before_action :set_shop, only: [:create, :destroy]
+  before_action :set_shop, only: [ :create, :destroy ]
 
   def index
     # includes でN+1を防止（shop情報を一括取得）

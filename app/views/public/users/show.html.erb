@@ -67,7 +67,11 @@
                     <span class="mx-1">/</span>
                     紙: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
                   </p>
-                  <p class="small text-secondary mb-2 text-truncate"><%= report.comment %></p>
+                  <%# text-truncate は white-space: nowrap を適用するためモバイルではみ出す原因になっていたので変更 %>
+                  <p class="small text-secondary mb-2"
+                     style="overflow-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    <%= report.comment %>
+                  </p>
                   <div class="d-flex gap-2">
                     <%= link_to shop_path(report.shop), class: "btn btn-sm btn-outline-secondary" do %>
                       <i class="fa-solid fa-store me-1"></i>店舗詳細

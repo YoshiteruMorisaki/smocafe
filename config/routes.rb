@@ -26,14 +26,14 @@
 
     # カフェ一覧・詳細
     # 各店舗に対してレビュー投稿とブックマーク登録をネストしています。
-    resources :shops, only: [:index, :show] do
-      resources :reports, only: [:index, :new, :create]
-      resource :bookmark, only: [:create, :destroy]
+    resources :shops, only: [ :index, :show ] do
+      resources :reports, only: [ :index, :new, :create ]
+      resource :bookmark, only: [ :create, :destroy ]
     end
 
     # 投稿済みレビューの編集 / 削除、ブックマーク一覧
-    resources :reports, only: [:edit, :update, :destroy]
-    resources :bookmarks, only: [:index]
+    resources :reports, only: [ :edit, :update, :destroy ]
+    resources :bookmarks, only: [ :index ]
   end
 
   # ------------------------------
@@ -49,9 +49,9 @@
     delete "sign_out", to: "sessions#destroy"
 
     # 管理画面で扱う主要リソース
-    resources :shops, except: [:show]
-    resources :reports, only: [:index, :destroy]
-    resources :tags, except: [:show]
+    resources :shops, except: [ :show ]
+    resources :reports, only: [ :index, :destroy ]
+    resources :tags, except: [ :show ]
     resources :users, only: [] do
       member do
         patch :toggle_active

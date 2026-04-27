@@ -1,6 +1,6 @@
 class Public::ReportsController < Public::ApplicationController
-  before_action :set_shop, only: [:index, :new, :create]
-  before_action :set_report, only: [:edit, :update, :destroy]
+  before_action :set_shop, only: [ :index, :new, :create ]
+  before_action :set_report, only: [ :edit, :update, :destroy ]
 
   def index
     # includes(:user) で投稿一覧のユーザー表示 N+1 を防止

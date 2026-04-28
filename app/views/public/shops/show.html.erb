@@ -138,7 +138,7 @@
               <% else %>
                 <div class="small text-secondary mb-2">投稿するにはログインが必要です。</div>
                 <div class="d-grid">
-                  <%= link_to users_sign_in_path, class: "btn btn-outline-success" do %>
+                  <%= link_to users_sign_in_path(return_to: shop_path(@shop)), class: "btn btn-outline-success" do %>
                     <i class="fa-solid fa-right-to-bracket me-1"></i>ログインしてコメントを投稿する
                   <% end %>
                 </div>

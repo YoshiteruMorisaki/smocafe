@@ -34,6 +34,20 @@ class PublicAuthenticationTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
+  test "user returns to shop page after sign in with return_to" do
+    shop = shops(:shibuya_lounge)
+
+    get users_sign_in_path(return_to: shop_path(shop))
+    assert_response :success
+
+    post users_sign_in_path, params: {
+      email_address: users(:active_user).email_address,
+      password: "password"
+    }
+
+    assert_redirected_to shop_path(shop)
+  end
+
   test "user can update profile without changing password" do
     post users_sign_in_path, params: {
       email_address: users(:active_user).email_address,

@@ -2,6 +2,7 @@ class Public::SessionsController < Public::ApplicationController
   allow_unauthenticated_access only: %i[new create]
 
   def new
+    session[:return_to_after_authenticating] = safe_return_to_path(params[:return_to]) if params[:return_to].present?
     redirect_to users_my_page_path, notice: "すでにログインしています。" if authenticated_user?
   end
 
@@ -31,5 +32,26 @@ class Public::SessionsController < Public::ApplicationController
   def destroy
     terminate_session
     redirect_to root_path, notice: "ログアウトしました。"
+  end
+
+  private
+
+  def safe_return_to_path(raw_path)
+    # ログイン後の戻り先として使える「同一アプリ内の相対パス」のみ許可する
+    parsed = URI.parse(raw_path)
+
+    # 外部URLへの遷移を防ぐ（open redirect 対策）
+    return if parsed.scheme.present? || parsed.host.present?
+    # 先頭が / のアプリ内パスのみ許可
+    return unless parsed.path.start_with?("/")
+    # //example.com のようなプロトコル相対URLを拒否
+    return if raw_path.start_with?("//")
+
+    # クエリ文字列は維持して復元する
+    query = parsed.query.present? ? "?#{parsed.query}" : ""
+    "#{parsed.path}#{query}"
+  rescue URI::InvalidURIError
+    # 不正なURL文字列は戻り先として使わない
+    nil
   end
 end

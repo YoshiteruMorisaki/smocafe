@@ -26,6 +26,11 @@ ja:
           unknown: 不明
           allowed: 可
           disallowed: 不可
+      user:
+        email: メールアドレス
+        password: パスワード
+        password_confirmation: パスワード確認
+        name: ユーザー名
       tag:
         name: タグ名
       report:
@@ -51,4 +56,5 @@ ja:
       long: "%Y年%m月%d日"
   errors:
     messages:
+      blank: を入力してください
       inclusion: は一覧にありません

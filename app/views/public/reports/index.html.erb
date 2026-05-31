@@ -34,11 +34,7 @@
                 </div>
               </div>
 
-              <p class="small mb-2">
-                電子タバコ: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
-                <span class="mx-1">/</span>
-                紙タバコ: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
-              </p>
+              <%= render "shared/report_tobacco_status", report: report %>
 
               <p class="mb-0 text-secondary"><%= simple_format(report.comment) %></p>
             </article>

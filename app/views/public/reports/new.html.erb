@@ -10,7 +10,7 @@
             <span class="fw-semibold text-dark"><%= @shop.name %></span> の利用情報を投稿します。
           </p>
 
-          <%= render "form", shop: @shop, report: @report %>
+          <%= render "form", shop: @shop, report: @report, tags: @tags, comment_placeholder: "利用時の喫煙状況や店内の様子などを入力してください。" %>
         </div>
       </div>
     </div>

@@ -1,4 +1,12 @@
-<%= form_with model: [shop, report], class: "row g-3" do |f| %>
+<% form_url = local_assigns.fetch(:form_url, [shop, report]) %>
+<% form_method = local_assigns.fetch(:form_method, :post) %>
+<% submit_label = local_assigns.fetch(:submit_label, "投稿する") %>
+<% cancel_path = local_assigns.fetch(:cancel_path, shop_path(shop)) %>
+<% cancel_label = local_assigns.fetch(:cancel_label, "店舗詳細へ戻る") %>
+<% tags = local_assigns.fetch(:tags, @tags) %>
+<% comment_placeholder = local_assigns[:comment_placeholder] %>
+
+<%= form_with model: report, url: form_url, method: form_method, class: "row g-3" do |f| %>
   <div class="col-12">
     <%= f.label :visited_on, class: "form-label" %>
     <%= f.date_field :visited_on, class: "form-control", required: true, max: Date.current %>
@@ -16,16 +24,18 @@
 
   <div class="col-12">
     <%= f.label :comment, class: "form-label" %>
-    <%= f.text_area :comment, class: "form-control", rows: 6, maxlength: 1000, required: true, placeholder: "利用時の喫煙状況や店内の様子などを入力してください。" %>
+    <% text_area_options = { class: "form-control", rows: 6, maxlength: 1000, required: true } %>
+    <% text_area_options[:placeholder] = comment_placeholder if comment_placeholder.present? %>
+    <%= f.text_area :comment, text_area_options %>
     <div class="form-text">最大1000文字</div>
   </div>
 
-  <% if @tags.present? %>
+  <% if tags.present? %>
     <div class="col-12">
       <label class="form-label">タグ（店舗に追加するタグを選択）</label>
       <% already_tagged_ids = shop.tag_ids %>
       <div class="d-flex flex-wrap gap-2 mt-1">
-        <% @tags.each do |tag| %>
+        <% tags.each do |tag| %>
           <% already_added = already_tagged_ids.include?(tag.id) %>
           <% if already_added %>
             <span class="badge text-bg-success fs-6 fw-normal px-3 py-2">
@@ -57,7 +67,7 @@
   <% end %>
 
   <div class="col-12 d-flex flex-wrap gap-2 pt-2">
-    <%= f.submit "投稿する", class: "btn btn-success" %>
-    <%= link_to "店舗詳細へ戻る", shop_path(shop), class: "btn btn-outline-secondary" %>
+    <%= f.submit submit_label, class: "btn btn-success" %>
+    <%= link_to cancel_label, cancel_path, class: "btn btn-outline-secondary" %>
   </div>
 <% end %>

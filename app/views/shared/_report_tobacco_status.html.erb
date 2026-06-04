@@ -1,0 +1,9 @@
+<% css_class = local_assigns.fetch(:css_class, "small mb-2") %>
+<% heated_label = local_assigns.fetch(:heated_label, "電子タバコ") %>
+<% papper_label = local_assigns.fetch(:papper_label, "紙タバコ") %>
+
+<p class="<%= css_class %>">
+  <%= heated_label %>: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
+  <span class="mx-1">/</span>
+  <%= papper_label %>: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
+</p>

@@ -62,11 +62,7 @@
                     <span class="fw-semibold"><%= report.shop.name %></span>
                     <span class="small text-secondary"><i class="fa-regular fa-calendar me-1"></i><%= l(report.visited_on, format: :short) %></span>
                   </div>
-                  <p class="small mb-2">
-                    電子: <span class="fw-semibold"><%= report.heated_tobacco_status_i18n %></span>
-                    <span class="mx-1">/</span>
-                    紙: <span class="fw-semibold"><%= report.papper_tobacco_status_i18n %></span>
-                  </p>
+                  <%= render "shared/report_tobacco_status", report: report, heated_label: "電子", papper_label: "紙" %>
                   <%# text-truncate は white-space: nowrap を適用するためモバイルではみ出す原因になっていたので変更 %>
                   <p class="small text-secondary mb-2"
                      style="overflow-wrap: break-word; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
